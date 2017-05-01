@@ -41,6 +41,9 @@ class Model:
 
     def _create_model_files(self):
         self.write_MDL_file()
+        self.initialise_model()
+        
+    def initialise_model(self):
         winfram_path = os.path.join(self._install_directory,
                                     'system\winfram.exe')
         subprocess.call([winfram_path, 'I'])
@@ -48,13 +51,13 @@ class Model:
     def write_MDL_file(self):
         path = os.path.join(self.path, self.name + '.mdl')
         with open(path, 'w') as MDL:
-            MDL.writelines('N,' + n.number + ',' + n.x + ',' + n.y + ',' +
-                           n.z + ',' + n.CSYS for n in self.nodes)
-            MDL.writelines('E,' + e.number + ',' + e.N1 + ',' + e.N2 + ',' +
-                           e.N3 + ',' + e.rotation + ',' + e.geometry + ',' +
-                           e.material + ',' + e.relZ + ',' + e.relY + ',' +
-                           e.taper + ',' + e.type + ',' + e.CO + ',' +
-                           e.bend_radius for e in self.beam_elements)
+            MDL.writelines('N,' + str(n.number) + ',' + str(n.x) + ',' + str(n.y) + ',' +
+                           str(n.z) + ',' + str(n.CSYS) + '\n' for n in self.nodes)
+            MDL.writelines('E,' + str(e.number) + ',' + str(e.N1) + ',' + str(e.N2) + ',' +
+                           str(e.N3) + ',' + str(e.rotation) + ',' + str(e.geometry) + ',' +
+                           str(e.material) + ',' + str(e.relZ) + ',' + str(e.relY) + ',' +
+                           str(e.taper) + ',' + str(e.type) + ',' + str(e.CO) + ',' +
+                           str(e.bend_radius) + '\n' for e in self.beam_elements)
 
     def _get_FS2000_install_directory(self):
         reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
@@ -121,3 +124,5 @@ if __name__ == "__main__":
 
     print(m.nodes)
     print(m.beam_elements)
+    m.write_MDL_file()
+    m.initialise_model()
