@@ -112,11 +112,12 @@ class BeamElement:
         return 'Beam Element {0} <N1 = {1}, N2 = {2}>'.format(self.number,
                                                               self.N1, self.N2)
 
-m = Model('C:\Dev\pyFS\Model', 'test model')
-for node in range(1, 12):
-    m.create_node(node, node - 1, 0, 0, 0)
-for element in range(1, 11):
-    m.create_beam_element(N1=element, N2=element + 1)
+if __name__ == "__main__":
+    m = Model('C:\Dev\pyFS\Model', 'test model')
+    for node in range(1, 12):
+        m.create_node(node, node - 1, 0, 0, 0)
+    for element in range(1, 11):
+        m.create_beam_element(N1=element, N2=element + 1)
 
-print(m.nodes)
-print(m.beam_elements)
+    print(m.nodes)
+    print(m.beam_elements)
