@@ -35,6 +35,13 @@ class Model:
 
     def _initialise_model(self):
         self.date_created = datetime.datetime.now()
+        self._create_empty_lists()
+        self._initialise_app()
+
+    def _read_model(self):
+        pass
+
+    def _create_empty_lists(self):
         self.nodes = []
         self.beam_elements = []
         self.couples = []
@@ -43,19 +50,17 @@ class Model:
         self.materials = []
         self.rc_tables = []
         self.restraints = []
+
+    def _initialise_app(self):
         self._get_FS2000_install_directory()
         self._update_model_nam()
         self._update_batch_nam()
         self._create_model_files()
-        
-    def _read_model(self):
-        pass
-    
 
     def _create_model_files(self):
         self.write_MDL_file()
         self.initialise_model()
-        
+
     def initialise_model(self):
         winfram_path = os.path.join(self._install_directory,
                                     'system\winfram.exe')
@@ -64,13 +69,17 @@ class Model:
     def write_MDL_file(self):
         path = os.path.join(self.path, self.name + '.mdl')
         with open(path, 'w') as MDL:
-            MDL.writelines('N,' + str(n.number) + ',' + str(n.x) + ',' + str(n.y) + ',' +
-                           str(n.z) + ',' + str(n.CSYS) + '\n' for n in self.nodes)
-            MDL.writelines('E,' + str(e.number) + ',' + str(e.N1) + ',' + str(e.N2) + ',' +
-                           str(e.N3) + ',' + str(e.rotation) + ',' + str(e.geometry) + ',' +
-                           str(e.material) + ',' + str(e.relZ) + ',' + str(e.relY) + ',' +
-                           str(e.taper) + ',' + str(e.type) + ',' + str(e.CO) + ',' +
-                           str(e.bend_radius) + '\n' for e in self.beam_elements)
+            MDL.writelines('N,' + str(n.number) + ',' + str(n.x) + ',' +
+                           str(n.y) + ',' + str(n.z) + ',' + str(n.CSYS) +
+                           '\n' for n in self.nodes)
+            MDL.writelines('E,' + str(e.number) + ',' + str(e.N1) + ',' +
+                           str(e.N2) + ',' + str(e.N3) + ',' +
+                           str(e.rotation) + ',' + str(e.geometry) + ',' +
+                           str(e.material) + ',' + str(e.relZ) + ',' +
+                           str(e.relY) + ',' + str(e.taper) + ',' +
+                           str(e.type) + ',' + str(e.CO) + ',' +
+                           str(e.bend_radius) + '\n'
+                           for e in self.beam_elements)
 
     def _get_FS2000_install_directory(self):
         reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
