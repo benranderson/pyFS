@@ -6,13 +6,13 @@ import subprocess
 
 class Model:
 
-    def __init__(self, path, name):
+    def __init__(self, path, name, initialise=false):
         self.path = path
         self.name = name
-        self.date_created = datetime.datetime.now()
-        self.nodes = []
-        self.beam_elements = []
-        self._initialise_model()
+        if initialise:
+            self._initialise_model()
+        else:
+            self._read_model()
 
     def create_node(self, number=0, x=0, y=0, z=0, CSYS=0):
         if number == 0:
@@ -34,10 +34,23 @@ class Model:
                                               taper, type, CO, bend_radius))
 
     def _initialise_model(self):
+        self.date_created = datetime.datetime.now()
+        self.nodes = []
+        self.beam_elements = []
+        self.couples = []
+        self.geometries = []
+        self.couple_properties = []
+        self.materials = []
+        self.rc_tables = []
+        self.restraints = []
         self._get_FS2000_install_directory()
         self._update_model_nam()
         self._update_batch_nam()
         self._create_model_files()
+        
+    def _read_model(self):
+        pass
+    
 
     def _create_model_files(self):
         self.write_MDL_file()
