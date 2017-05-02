@@ -6,11 +6,13 @@ import subprocess
 
 class Model:
 
-    def __init__(self, path, name, initialise=false):
+    def __init__(self, path, name, initialise=False):
         self.path = path
         self.name = name
+        self._initialise_app()
         if initialise:
             self._initialise_model()
+            self.initialise_model()
         else:
             self._read_model()
 
@@ -36,10 +38,17 @@ class Model:
     def _initialise_model(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
-        self._initialise_app()
 
     def _read_model(self):
-        pass
+        mp = ModelParser(self.path, self.name)
+        self.nodes = mp.nodes
+        self.beam_elements = mp.beam_elements
+        self.couples = []
+        self.geometries = []
+        self.couple_properties = []
+        self.materials = []
+        self.rc_tables = []
+        self.restraints = []
 
     def _create_empty_lists(self):
         self.nodes = []
@@ -55,7 +64,6 @@ class Model:
         self._get_FS2000_install_directory()
         self._update_model_nam()
         self._update_batch_nam()
-        self._create_model_files()
 
     def _create_model_files(self):
         self.write_MDL_file()
@@ -98,6 +106,9 @@ class Model:
         path = os.path.join(self._install_directory, 'batch.nam')
         with open(path, 'w') as nam:
             nam.write(self._generate_nam_data())
+            
+    def __repr__(self):
+        return 'Model: {0}'.format(self.name)
 
 
 class Node:
@@ -137,6 +148,50 @@ class BeamElement:
         return 'Beam Element {0} <N1 = {1}, N2 = {2}>'.format(self.number,
                                                               self.N1, self.N2)
 
+class ModelParser:
+
+    def __init__(self, path, name):
+        self.mdl = os.path.join(path, name + '.mdl')
+        self._create_empty_lists()
+        self._read_input_file()
+
+    def _create_empty_lists(self):
+        self.nodes = []
+        self.beam_elements = []
+        self.couples = []
+        self.geometries = []
+        self.couple_properties = []
+        self.materials = []
+        self.rc_tables = []
+        self.restraints = []
+
+    def _read_input_file(self):
+        with open(self.mdl, 'r') as mdl:
+        
+            for line in mdl:
+                split_line = line.split(',')
+                
+                if split_line[0].lower() == 'n':
+                    self.nodes.append(Node(split_line[1], split_line[2], 
+                                           split_line[3], split_line[4],
+                                           split_line[5]))
+                    
+                elif split_line[0].lower() == 'e':
+                    self.beam_elements.append(BeamElement(int(split_line[1]),
+                                                          int(split_line[2]),
+                                                          int(split_line[3]),
+                                                          int(split_line[4]),
+                                                          int(split_line[5]),
+                                                          int(split_line[6]),
+                                                          int(split_line[7]),
+                                                          int(split_line[8]),
+                                                          int(split_line[9]),
+                                                          int(split_line[10]),
+                                                          int(split_line[11]),
+                                                          int(split_line[12]),
+                                                          int(split_line[13])))
+    
+
 if __name__ == "__main__":
     m = Model('C:\Dev\pyFS\Model', 'test model')
     for node in range(1, 12):
@@ -147,4 +202,4 @@ if __name__ == "__main__":
     print(m.nodes)
     print(m.beam_elements)
     m.write_MDL_file()
-    m.initialise_model()
+    #m.initialise_model()
