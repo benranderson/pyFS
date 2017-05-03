@@ -1,3 +1,7 @@
+from node import *
+from beam_element import *
+from model_parser import *
+
 import datetime
 import os
 from winreg import *
@@ -106,100 +110,6 @@ class Model:
         path = os.path.join(self._install_directory, 'batch.nam')
         with open(path, 'w') as nam:
             nam.write(self._generate_nam_data())
-            
+
     def __repr__(self):
         return 'Model: {0}'.format(self.name)
-
-
-class Node:
-
-    def __init__(self, number, x_coord, y_coord, z_coord, CSYS=0):
-        self.number = number
-        self.x = x_coord
-        self.y = y_coord
-        self.z = z_coord
-        self.CSYS = CSYS
-
-    def __repr__(self):
-        return 'Node {0} <{1}, {2}, {3}> CSYS={4}'.format(self.number, self.x,
-                                                          self.y, self.z,
-                                                          self.CSYS)
-
-
-class BeamElement:
-
-    def __init__(self, number, N1, N2, N3, rotation, geometry, material,
-                 relZ, relY, taper, type, CO, bend_radius):
-        self.number = number
-        self.N1 = N1
-        self.N2 = N2
-        self.N3 = N3
-        self.rotation = rotation
-        self.geometry = geometry
-        self.material = material
-        self.relZ = relZ
-        self.relY = relY
-        self.taper = taper
-        self.type = type
-        self.CO = CO
-        self.bend_radius = bend_radius
-
-    def __repr__(self):
-        return 'Beam Element {0} <N1 = {1}, N2 = {2}>'.format(self.number,
-                                                              self.N1, self.N2)
-
-class ModelParser:
-
-    def __init__(self, path, name):
-        self.mdl = os.path.join(path, name + '.mdl')
-        self._create_empty_lists()
-        self._read_input_file()
-
-    def _create_empty_lists(self):
-        self.nodes = []
-        self.beam_elements = []
-        self.couples = []
-        self.geometries = []
-        self.couple_properties = []
-        self.materials = []
-        self.rc_tables = []
-        self.restraints = []
-
-    def _read_input_file(self):
-        with open(self.mdl, 'r') as mdl:
-        
-            for line in mdl:
-                split_line = line.split(',')
-                
-                if split_line[0].lower() == 'n':
-                    self.nodes.append(Node(split_line[1], split_line[2], 
-                                           split_line[3], split_line[4],
-                                           split_line[5]))
-                    
-                elif split_line[0].lower() == 'e':
-                    self.beam_elements.append(BeamElement(int(split_line[1]),
-                                                          int(split_line[2]),
-                                                          int(split_line[3]),
-                                                          int(split_line[4]),
-                                                          int(split_line[5]),
-                                                          int(split_line[6]),
-                                                          int(split_line[7]),
-                                                          int(split_line[8]),
-                                                          int(split_line[9]),
-                                                          int(split_line[10]),
-                                                          int(split_line[11]),
-                                                          int(split_line[12]),
-                                                          int(split_line[13])))
-    
-
-if __name__ == "__main__":
-    m = Model('C:\Dev\pyFS\Model', 'test model')
-    for node in range(1, 12):
-        m.create_node(node, node - 1, 0, 0, 0)
-    for element in range(1, 11):
-        m.create_beam_element(N1=element, N2=element + 1)
-
-    print(m.nodes)
-    print(m.beam_elements)
-    m.write_MDL_file()
-    #m.initialise_model()

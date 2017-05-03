@@ -17,15 +17,15 @@ class ModelParser:
 
     def _read_input_file(self):
         with open(self.mdl, 'r') as mdl:
-        
+
             for line in mdl:
                 split_line = line.split(',')
-                
+
                 if split_line[0].lower() == 'n':
-                    self.nodes.append(Node(split_line[1], split_line[2], 
+                    self.nodes.append(Node(split_line[1], split_line[2],
                                            split_line[3], split_line[4],
                                            split_line[5]))
-                    
+
                 elif split_line[0].lower() == 'e':
                     self.beam_elements.append(BeamElement(int(split_line[1]),
                                                           int(split_line[2]),
