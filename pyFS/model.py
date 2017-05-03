@@ -6,11 +6,11 @@ import subprocess
 
 class Model:
 
-    def __init__(self, path, name, initialise=False):
+    def __init__(self, path, name, initialise_model=False):
         self.path = path
         self.name = name
         self._initialise_app()
-        if initialise:
+        if initialise_model:
             self._initialise_model()
             self.initialise_model()
         else:
