@@ -1,6 +1,7 @@
 from node import *
 from beam_element import *
 from model_parser import *
+from spring_couple import *
 
 
 import datetime
