@@ -22,9 +22,11 @@ class ModelParser:
                 split_line = line.split(',')
 
                 if split_line[0].lower() == 'n':
-                    self.nodes.append(Node(split_line[1], split_line[2],
-                                           split_line[3], split_line[4],
-                                           split_line[5]))
+                    self.nodes.append(Node(int(split_line[1]), 
+                                           float(split_line[2]),
+                                           float(split_line[3]), 
+                                           float(split_line[4]),
+                                           int(split_line[5])))
 
                 elif split_line[0].lower() == 'e':
                     self.beam_elements.append(BeamElement(int(split_line[1]),
@@ -40,3 +42,12 @@ class ModelParser:
                                                           int(split_line[11]),
                                                           int(split_line[12]),
                                                           int(split_line[13])))
+                                                          
+                elif split_line[0].lower() == 'sc':
+                    self.couples.append(SpringCouple(int(split_line[1]),
+                                                     int(split_line[2]),
+                                                     int(split_line[3]),
+                                                     int(split_line[4]),
+                                                     int(split_line[5]),
+                                                     int(split_line[6]),
+                                                     int(split_line[7])))
