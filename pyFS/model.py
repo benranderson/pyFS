@@ -2,6 +2,7 @@ from node import *
 from beam_element import *
 from model_parser import *
 
+
 import datetime
 import os
 from winreg import *
@@ -38,6 +39,18 @@ class Model:
         self.beam_elements.append(BeamElement(number, N1, N2, N3, rotation,
                                               geometry, material, relZ, relzY,
                                               taper, type, CO, bend_radius))
+
+    def create_couple(self, number=0, N1=0, N2=0, rotation=0,
+                      reference_element=0, spring_constant_table=0, CSYS=0):
+        if number == 0:
+            number == len(self.couples) + 1
+        if N1 == 0:
+            N1 = len(self.nodes) + 1
+        if N2 == 0:
+            N2 = N1 + 1
+        self.couples.append(SpringCouple(number, N1, N2, rotation,
+                                         reference_element,
+                                         spring_constant_table, CSYS))
 
     def _initialise_model(self):
         self.date_created = datetime.datetime.now()
@@ -92,6 +105,11 @@ class Model:
                            str(e.type) + ',' + str(e.CO) + ',' +
                            str(e.bend_radius) + '\n'
                            for e in self.beam_elements)
+            MDL.writelines('SC' + str(sc.number) + ',' + str(sc.N1) + ',' +
+                           str(sc.N2) + ',' + str(sc.rotation) + ',' +
+                           str(sc.reference_element) + ',' +
+                           str(sc.spring_constant_table) + ',' str(sc.CSYS)
+                           for sc in self.couples)
 
     def _get_FS2000_install_directory(self):
         reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
