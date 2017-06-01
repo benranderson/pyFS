@@ -1,8 +1,8 @@
-from pyFS.node import *
-from pyFS.beam_element import *
-from pyFS.model_parser import *
-from pyFS.spring_couple import *
-from pyFS.restraint import *
+from pyFS.node import Node
+from pyFS.beam_element import BeamElement
+from pyFS.model_parser import ModelParser
+from pyFS.spring_couple import SpringCouple
+from pyFS.restraint import Restraint
 
 
 import datetime
