@@ -70,12 +70,11 @@ class Model:
         self.nodes = mp.nodes
         self.beam_elements = mp.beam_elements
         self.couples = mp.couples
-        self.restraints = []
+        self.restraints = mp.restraints
         self.geometries = []
         self.couple_properties = []
         self.materials = []
         self.rc_tables = []
-        self.restraints = []
 
     def _create_empty_lists(self):
         self.nodes = []
@@ -86,7 +85,6 @@ class Model:
         self.couple_properties = []
         self.materials = []
         self.rc_tables = []
-        self.restraints = []
 
     def _initialise_app(self):
         self._get_FS2000_install_directory()
@@ -116,11 +114,17 @@ class Model:
                            str(e.type) + ',' + str(e.CO) + ',' +
                            str(e.bend_radius) + '\n'
                            for e in self.beam_elements)
-            MDL.writelines('SC' + str(sc.number) + ',' + str(sc.N1) + ',' +
+            MDL.writelines('SC,' + str(sc.number) + ',' + str(sc.N1) + ',' +
                            str(sc.N2) + ',' + str(sc.rotation) + ',' +
                            str(sc.reference_element) + ',' +
-                           str(sc.spring_constant_table) + ',' + str(sc.CSYS)
+                           str(sc.spring_constant_table) + ',' + 
+                           str(sc.CSYS) + '\n'
                            for sc in self.couples)
+            MDL.writelines('REST,' + str(r.Node) + ',' + str(int(r.Tx)) +
+                           ',' + str(int(r.Ty)) + ',' + str(int(r.Tz)) + 
+                           ',' + str(int(r.Rx)) + ',' + str(int(r.Ry)) +
+                           ',' + str(int(r.Rz)) + '\n'
+                           for r in self.restraints)
 
     def _get_FS2000_install_directory(self):
         reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)

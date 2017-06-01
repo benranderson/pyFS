@@ -2,6 +2,7 @@ from pyFS.node import *
 from pyFS.beam_element import *
 from pyFS.model_parser import *
 from pyFS.spring_couple import *
+from pyFS.restraint import *
 
 import os
 
@@ -27,7 +28,7 @@ class ModelParser:
         with open(self.mdl, 'r') as mdl:
 
             for line in mdl:
-                split_line = line.split(',')
+                split_line = line.rstrip().split(',')
 
                 if split_line[0].lower() == 'n':
                     self.nodes.append(Node(int(split_line[1]),
@@ -59,3 +60,12 @@ class ModelParser:
                                                      int(split_line[5]),
                                                      int(split_line[6]),
                                                      int(split_line[7])))
+
+                elif split_line[0].lower() == 'rest':
+                    self.restraints.append(Restraint(int(split_line[1]),
+                                                     bool(int(split_line[2])),
+                                                     bool(int(split_line[3])),
+                                                     bool(int(split_line[4])),
+                                                     bool(int(split_line[5])),
+                                                     bool(int(split_line[6])),
+                                                     bool(int(split_line[7]))))
