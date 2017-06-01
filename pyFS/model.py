@@ -55,11 +55,10 @@ class Model:
                                          spring_constant_table, CSYS))
 
     def create_restraint(self, node, Tx=False, Ty=False, Tz=False, Rx=False,
-                         Ry=False, Rz = False):
+                         Ry=False, Rz=False):
         if not (Tx or Ty or Tz or Rx or Ry or Rz):
             raise ValueError("One degree of freedom must be retrained (True)")
         self.restraints.append(Restraint(node, Tx, Ty, Tz, Rx, Ry, Rz))
-        
 
     def _initialise_model(self):
         self.date_created = datetime.datetime.now()
@@ -117,11 +116,11 @@ class Model:
             MDL.writelines('SC,' + str(sc.number) + ',' + str(sc.N1) + ',' +
                            str(sc.N2) + ',' + str(sc.rotation) + ',' +
                            str(sc.reference_element) + ',' +
-                           str(sc.spring_constant_table) + ',' + 
+                           str(sc.spring_constant_table) + ',' +
                            str(sc.CSYS) + '\n'
                            for sc in self.couples)
             MDL.writelines('REST,' + str(r.Node) + ',' + str(int(r.Tx)) +
-                           ',' + str(int(r.Ty)) + ',' + str(int(r.Tz)) + 
+                           ',' + str(int(r.Ty)) + ',' + str(int(r.Tz)) +
                            ',' + str(int(r.Rx)) + ',' + str(int(r.Ry)) +
                            ',' + str(int(r.Rz)) + '\n'
                            for r in self.restraints)
