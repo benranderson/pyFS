@@ -1,3 +1,10 @@
+from pyFS.node import *
+from pyFS.beam_element import *
+from pyFS.model_parser import *
+from pyFS.spring_couple import *
+
+import os
+
 class ModelParser:
 
     def __init__(self, path, name):

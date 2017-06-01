@@ -1,7 +1,7 @@
-import node
-from beam_element import *
-from model_parser import *
-from spring_couple import *
+from pyFS.node import *
+from pyFS.beam_element import *
+from pyFS.model_parser import *
+from pyFS.spring_couple import *
 
 
 import datetime
@@ -25,7 +25,7 @@ class Model:
     def create_node(self, number=0, x=0, y=0, z=0, CSYS=0):
         if number == 0:
             number = len(self.nodes) + 1
-        self.nodes.append(node.Node(number, x, y, z))
+        self.nodes.append(Node(number, x, y, z))
 
     def create_beam_element(self, number=0, N1=0, N2=0, N3=0, rotation=0,
                             geometry=0, material=0, relZ=0,
@@ -44,7 +44,7 @@ class Model:
     def create_couple(self, number=0, N1=0, N2=0, rotation=0,
                       reference_element=0, spring_constant_table=0, CSYS=0):
         if number == 0:
-            number == len(self.couples) + 1
+            number = len(self.couples) + 1
         if N1 == 0:
             N1 = len(self.nodes) + 1
         if N2 == 0:
@@ -61,7 +61,7 @@ class Model:
         mp = ModelParser(self.path, self.name)
         self.nodes = mp.nodes
         self.beam_elements = mp.beam_elements
-        self.couples = []
+        self.couples = mp.couples
         self.geometries = []
         self.couple_properties = []
         self.materials = []
