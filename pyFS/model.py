@@ -1,4 +1,4 @@
-from node import *
+import node
 from beam_element import *
 from model_parser import *
 from spring_couple import *
@@ -25,7 +25,7 @@ class Model:
     def create_node(self, number=0, x=0, y=0, z=0, CSYS=0):
         if number == 0:
             number = len(self.nodes) + 1
-        self.nodes.append(Node(number, x, y, z))
+        self.nodes.append(node.Node(number, x, y, z))
 
     def create_beam_element(self, number=0, N1=0, N2=0, N3=0, rotation=0,
                             geometry=0, material=0, relZ=0,
@@ -109,7 +109,7 @@ class Model:
             MDL.writelines('SC' + str(sc.number) + ',' + str(sc.N1) + ',' +
                            str(sc.N2) + ',' + str(sc.rotation) + ',' +
                            str(sc.reference_element) + ',' +
-                           str(sc.spring_constant_table) + ',' str(sc.CSYS)
+                           str(sc.spring_constant_table) + ',' + str(sc.CSYS)
                            for sc in self.couples)
 
     def _get_FS2000_install_directory(self):
