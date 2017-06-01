@@ -2,6 +2,7 @@ from pyFS.node import *
 from pyFS.beam_element import *
 from pyFS.model_parser import *
 from pyFS.spring_couple import *
+from pyFS.restraint import *
 
 
 import datetime
@@ -53,6 +54,13 @@ class Model:
                                          reference_element,
                                          spring_constant_table, CSYS))
 
+    def create_restraint(self, node, Tx=False, Ty=False, Tz=False, Rx=False,
+                         Ry=False, Rz = False):
+        if not (Tx or Ty or Tz or Rx or Ry or Rz):
+            raise ValueError("One degree of freedom must be retrained (True)")
+        self.restraints.append(Restraint(node, Tx, Ty, Tz, Rx, Ry, Rz))
+        
+
     def _initialise_model(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
@@ -62,6 +70,7 @@ class Model:
         self.nodes = mp.nodes
         self.beam_elements = mp.beam_elements
         self.couples = mp.couples
+        self.restraints = []
         self.geometries = []
         self.couple_properties = []
         self.materials = []
@@ -72,6 +81,7 @@ class Model:
         self.nodes = []
         self.beam_elements = []
         self.couples = []
+        self.restraints = []
         self.geometries = []
         self.couple_properties = []
         self.materials = []
