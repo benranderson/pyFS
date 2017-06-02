@@ -4,7 +4,7 @@ that this module provides equivalent functionality to the Model Definition task
 through an instance of the ModelDefinition class.
 
 Designing the object heirarchy this way allows multiple ModelDefinitions to be
-defined in a pyFS list and these can be used  with single or multiple Load, 
+defined in a pyFS list and these can be used  with single or multiple Load,
 Analysis of Post-Processing objects in a single pyFS model.
 """
 
@@ -40,13 +40,13 @@ class ModelDefinition:
                 unless it initialised explictly or written to MDL. Any existing
                 model of the same name in the same directory will be
                 overwritten.
-            
+
             2.  Create a new model, itialised
                 (overwrite_model=True, initialise_model=True)
                 As 1. but with a blank .MDL file created and initialised
                 using "WINFRAM I". This will create FS2000 model files and a
                 model which may be opened in the FS2000 GUI.
-                
+
             3.  Open an existing model, uninitialised
                 (overwrite_model=False, initialise_model=False)
                 If the named model exists on the specified path the MDL file
@@ -54,7 +54,7 @@ class ModelDefinition:
                 the read in model has also been initialised in FS2000. If the
                 model does not exist then a new model will be created and this
                 acts like option 1.
-                
+
             4.  Open an existing model, initialised
                 (overwrite_model=False, initialise_model=True)
                 As 3. except the model  will be initialised using "WINFRAM I".
@@ -107,7 +107,7 @@ class ModelDefinition:
         if not (Tx or Ty or Tz or Rx or Ry or Rz):
             raise ValueError("One degree of freedom must be retrained (True)")
         self.restraints.append(Restraint(node, Tx, Ty, Tz, Rx, Ry, Rz))
-        
+
     def _model_exists(self):
         file_path = os.path.join(self.path, self.name + '.xyz')
         file = pathlib.Path(file_path)

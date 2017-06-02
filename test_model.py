@@ -1,6 +1,7 @@
 from pyFS import pyFS as pyFS
 
-m = pyFS.pyFS('C:\Dev\pyFS\Model', 'test model', initialise_model=True).model_definition
+m = pyFS.pyFS('C:\Dev\pyFS\Model', 'test model',
+              initialise_model=True).model_definition
 for node in range(1, 12):
     m.create_node(node, node - 1, 0, 0, 0)
 for element in range(1, 11):

@@ -4,6 +4,7 @@ import datetime
 import os
 from winreg import *
 
+
 class pyFS:
 
     def __init__(self, path, name, initialise_model=False):
@@ -35,7 +36,7 @@ class pyFS:
 
     def _read_model(self):
         self.model_definition = ModelDefinition(self.path, self.name,
-                                           initialise_model=False)
+                                                initialise_model=False)
         # Add implementation of Load, Analysis, Results etc.
 
     def _generate_nam_data(self):
