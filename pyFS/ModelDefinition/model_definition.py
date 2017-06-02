@@ -1,27 +1,75 @@
-from pyFS.node import Node
-from pyFS.beam_element import BeamElement
-from pyFS.model_parser import ModelParser
-from pyFS.spring_couple import SpringCouple
-from pyFS.restraint import Restraint
+"""
+This module represents the Model Definintion task in the FS2000 GUI. The aim is
+that this module provides equivalent functionality to the Model Definition task
+through an instance of the ModelDefinition class.
 
+Designing the object heirarchy this way allows multiple ModelDefinitions to be
+defined in a pyFS list and these can be used  with single or multiple Load, 
+Analysis of Post-Processing objects in a single pyFS model.
+"""
+
+from pyFS.ModelDefinition.node import Node
+from pyFS.ModelDefinition.beam_element import BeamElement
+from pyFS.ModelDefinition.model_parser import ModelParser
+from pyFS.ModelDefinition.spring_couple import SpringCouple
+from pyFS.ModelDefinition.restraint import Restraint
 
 import datetime
 import os
-from winreg import *
 import subprocess
+import pathlib
 
 
-class Model:
+class ModelDefinition:
+    """
+    Represents all the functionality found in the Model Definition Task and
+    ultimately provides functionality to initialise a model in FS2000 or to
+    write .MDL files for use in an analysis.
+    """
 
-    def __init__(self, path, name, initialise_model=False):
+    def __init__(self, path, name, install_directory,
+                 overwrite_model=False, initialise_model=False):
+        """
+        A model definition can be created in one of four manners:
+            1.  Create a new model, unitialised
+                (overwrite_model=True, initialise_model=False)
+                This essentially creates a model structure within pyFS
+                containing the model definition data for a new model. The model
+                does not (yet) exist as an FS2000 model. This model could
+                not be opened within the GUI and would not exist persistently
+                unless it initialised explictly or written to MDL. Any existing
+                model of the same name in the same directory will be
+                overwritten.
+            
+            2.  Create a new model, itialised
+                (overwrite_model=True, initialise_model=True)
+                As 1. but with a blank .MDL file created and initialised
+                using "WINFRAM I". This will create FS2000 model files and a
+                model which may be opened in the FS2000 GUI.
+                
+            3.  Open an existing model, uninitialised
+                (overwrite_model=False, initialise_model=False)
+                If the named model exists on the specified path the MDL file
+                will be read into the pyFS structure. pyFS will not check if
+                the read in model has also been initialised in FS2000. If the
+                model does not exist then a new model will be created and this
+                acts like option 1.
+                
+            4.  Open an existing model, initialised
+                (overwrite_model=False, initialise_model=True)
+                As 3. except the model  will be initialised using "WINFRAM I".
+                This will ensure that the FS2000 model files match the model
+                listed in the MDL file.
+        """
         self.path = path
         self.name = name
-        self._initialise_app()
-        if initialise_model:
-            self._initialise_model()
-            self.initialise_model()
+        self.install_directory = install_directory
+        if (not overwrite_model) and self._model_exists():
+            self._read_model_definition()
         else:
-            self._read_model()
+            self._initialise_model_definition()
+        if initialise_model:
+            self.initialise_model_definition()
 
     def create_node(self, number=0, x=0, y=0, z=0, CSYS=0):
         if number == 0:
@@ -59,12 +107,17 @@ class Model:
         if not (Tx or Ty or Tz or Rx or Ry or Rz):
             raise ValueError("One degree of freedom must be retrained (True)")
         self.restraints.append(Restraint(node, Tx, Ty, Tz, Rx, Ry, Rz))
+        
+    def _model_exists(self):
+        file_path = os.path.join(self.path, self.name + '.xyz')
+        file = pathlib.Path(file_path)
+        return file.is_file()
 
-    def _initialise_model(self):
+    def _initialise_model_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
 
-    def _read_model(self):
+    def _read_model_definition(self):
         mp = ModelParser(self.path, self.name)
         self.nodes = mp.nodes
         self.beam_elements = mp.beam_elements
@@ -85,17 +138,12 @@ class Model:
         self.materials = []
         self.rc_tables = []
 
-    def _initialise_app(self):
-        self._get_FS2000_install_directory()
-        self._update_model_nam()
-        self._update_batch_nam()
-
     def _create_model_files(self):
         self.write_MDL_file()
         self.initialise_model()
 
-    def initialise_model(self):
-        winfram_path = os.path.join(self._install_directory,
+    def initialise_model_definition(self):
+        winfram_path = os.path.join(self.install_directory,
                                     'system\winfram.exe')
         subprocess.call([winfram_path, 'I'])
 
@@ -124,24 +172,6 @@ class Model:
                            ',' + str(int(r.Rx)) + ',' + str(int(r.Ry)) +
                            ',' + str(int(r.Rz)) + '\n'
                            for r in self.restraints)
-
-    def _get_FS2000_install_directory(self):
-        reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
-        key = OpenKey(reg, 'SOFTWARE\Wow6432Node\FS2000\Setup')
-        self._install_directory = EnumValue(key, 0)[1]
-
-    def _generate_nam_data(self):
-        return '{0}\{1}\n{1}\n{0}'.format(self.path, self.name)
-
-    def _update_model_nam(self):
-        path = os.path.join(self._install_directory, 'model.nam')
-        with open(path, 'w') as nam:
-            nam.write(self._generate_nam_data())
-
-    def _update_batch_nam(self):
-        path = os.path.join(self._install_directory, 'batch.nam')
-        with open(path, 'w') as nam:
-            nam.write(self._generate_nam_data())
 
     def __repr__(self):
         return 'Model: {0}'.format(self.name)
