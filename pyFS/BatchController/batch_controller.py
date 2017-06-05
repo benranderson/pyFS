@@ -17,6 +17,6 @@ class BatchController:
 
     def change_batch_model(self, model_path, model_name):
         util.update_batch_nam(model_name, model_path).
-        
+
     def run_commands(self, commands):
         [run_command(command) for command in commands]
