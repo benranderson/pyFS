@@ -29,5 +29,3 @@ class pyFS:
         self.model_definition = ModelDefinition(self.path, self.name,
                                                 initialise_model=False)
         # Add implementation of Load, Analysis, Results etc.
-
-

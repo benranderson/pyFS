@@ -4,7 +4,7 @@ import pyFS.SystemUtils as util
 
 
 class BatchController:
-    
+
     def __init__(self, model_path, model_name):
         self.model_name = model_name
         self.model_path = model_path
@@ -16,9 +16,8 @@ class BatchController:
         cmd = os.path.join(self._install_directory, exe)
         command_list = [cmd, command.arg]
         subprocess.call(command_list)
-        
+
     def change_batch_model(self, model_path, model_name):
         self.model_name = model_name
         self.model_path = model_path
         util.update_batch_nam(model_name, model_path)
-        
