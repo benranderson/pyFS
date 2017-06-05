@@ -66,7 +66,7 @@ class ModelDefinition:
         """
         self.path = path
         self.name = name
-        self.install_directory = util.get_FS2000_install_directory
+        self.install_directory = util.get_FS2000_install_directory()
         if (not overwrite_model) and self._model_exists():
             self._read_model_definition()
         else:
