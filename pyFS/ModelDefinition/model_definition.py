@@ -13,6 +13,8 @@ from pyFS.ModelDefinition.beam_element import BeamElement
 from pyFS.ModelDefinition.model_parser import ModelParser
 from pyFS.ModelDefinition.spring_couple import SpringCouple
 from pyFS.ModelDefinition.restraint import Restraint
+from pyFS.BatchController.batch_controller import BatchController
+from pyFS.BatchController.commands import *
 
 import datetime
 import os
@@ -143,9 +145,9 @@ class ModelDefinition:
         self.initialise_model()
 
     def initialise_model_definition(self):
-        winfram_path = os.path.join(self.install_directory,
-                                    'system\winfram.exe')
-        subprocess.call([winfram_path, 'I'])
+        bc = BatchController(self.path, self.name)
+        c = Winfram('I')
+        bc.run_command(c)
 
     def write_MDL_file(self):
         path = os.path.join(self.path, self.name + '.mdl')

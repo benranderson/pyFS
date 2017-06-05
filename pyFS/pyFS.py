@@ -2,7 +2,7 @@ from pyFS.ModelDefinition.model_definition import ModelDefinition
 
 import datetime
 import os
-from winreg import *
+from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
 
 
 class pyFS:
@@ -47,7 +47,4 @@ class pyFS:
         with open(path, 'w') as nam:
             nam.write(self._generate_nam_data())
 
-    def _update_batch_nam(self):
-        path = os.path.join(self._install_directory, 'batch.nam')
-        with open(path, 'w') as nam:
-            nam.write(self._generate_nam_data())
+
