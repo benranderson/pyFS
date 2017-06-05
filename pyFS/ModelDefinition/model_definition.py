@@ -130,6 +130,7 @@ class ModelDefinition:
         self.couple_properties = []
         self.materials = []
         self.rc_tables = []
+        self.ic_tables = []
 
     def _create_empty_lists(self):
         self.nodes = []
@@ -140,6 +141,7 @@ class ModelDefinition:
         self.couple_properties = []
         self.materials = []
         self.rc_tables = []
+        self.ic_tables = []
 
     def _create_model_files(self):
         self.write_MDL_file()
