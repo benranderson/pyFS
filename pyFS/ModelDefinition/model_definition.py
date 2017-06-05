@@ -15,6 +15,7 @@ from pyFS.ModelDefinition.spring_couple import SpringCouple
 from pyFS.ModelDefinition.restraint import Restraint
 from pyFS.BatchController.batch_controller import BatchController
 from pyFS.BatchController.commands import *
+import pyFS.SystemUtils.SystemUtils as util
 
 import datetime
 import os
@@ -29,7 +30,7 @@ class ModelDefinition:
     write .MDL files for use in an analysis.
     """
 
-    def __init__(self, path, name, install_directory,
+    def __init__(self, path, name,
                  overwrite_model=False, initialise_model=False):
         """
         A model definition can be created in one of four manners:
@@ -65,7 +66,7 @@ class ModelDefinition:
         """
         self.path = path
         self.name = name
-        self.install_directory = install_directory
+        self.install_directory = util.get_FS2000_install_directory
         if (not overwrite_model) and self._model_exists():
             self._read_model_definition()
         else:
