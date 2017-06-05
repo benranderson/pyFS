@@ -15,7 +15,7 @@ from pyFS.ModelDefinition.spring_couple import SpringCouple
 from pyFS.ModelDefinition.restraint import Restraint
 from pyFS.BatchController.batch_controller import BatchController
 from pyFS.BatchController.commands import *
-import pyFS.SystemUtils.SystemUtils as util
+import pyFS.SystemUtils as util
 
 import datetime
 import os
