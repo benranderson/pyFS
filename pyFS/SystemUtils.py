@@ -9,9 +9,9 @@ def get_FS2000_install_directory():
     return install_directory
 
 
-def update_nam(type, model_name, model_path):
+def update_nam(nam_type, model_name, model_path):
     install_directory = get_FS2000_install_directory()
-    path = os.path.join(install_directory, type + '.nam')
+    path = os.path.join(install_directory, nam_type + '.nam')
     with open(path, 'w') as nam:
         nam.write(generate_nam_data(model_name, model_path))
 
