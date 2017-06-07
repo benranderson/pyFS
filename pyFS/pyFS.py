@@ -20,7 +20,8 @@ class pyFS:
 
     def _initialise_model(self):
         self.date_created = datetime.datetime.now()
-        self._create_empty_model()
+        if 'win' in sys.platform:
+            self._create_empty_model()
 
     def _create_empty_model(self):
         self.model_definition = ModelDefinition(self.path, self.name,
