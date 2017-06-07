@@ -10,7 +10,7 @@ class Command():
             arg += '/'
         return arg
 
-    def __str__():
+    def __str__(self):
         return self.__class__.__name__
 
 
