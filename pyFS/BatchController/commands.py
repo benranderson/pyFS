@@ -14,7 +14,7 @@ class Command():
         return self.__class__.__name__
         
     def __repr__(self):
-        return __str__()
+        return self.__str__()
 
 
 class Winfram(Command):
