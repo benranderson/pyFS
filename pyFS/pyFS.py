@@ -3,7 +3,9 @@ import pyFS.SystemUtils as util
 
 import datetime
 import os
-from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
+import sys
+if 'win' in sys.platform:
+    from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
 
 
 class pyFS:

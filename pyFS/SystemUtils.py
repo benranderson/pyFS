@@ -1,6 +1,7 @@
-from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
 import os
-
+import sys
+if 'win' in sys.platform:
+    from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
 
 def get_FS2000_install_directory():
     reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
