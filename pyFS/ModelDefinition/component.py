@@ -60,6 +60,7 @@ class Restraint(Component):
         self.Ry = Ry
         self.Rz = Rz
 
+
 class Geometry(Component):
 
     def __init__(self, number, type, name, designation, graphics_type,
@@ -128,11 +129,6 @@ class Material(Component):
         self.temperature_table.append([temperature, alpha, E,
                                        allowable_stress])
 
-                                           def add_temperature_point(self, temperature, alpha, E, allowable_stress):
-
-        self.temperature_table.append([temperature, alpha, E,
-                                       allowable_stress])
-
 
 class SpringTable(Component):
 
@@ -146,3 +142,10 @@ class SpringTable(Component):
         self.K6 = K6
         self.type = type
         self.CO = CO
+
+
+class RCTable(Component):
+
+    def __init__(number, rc_points):
+        Component.__init__(self, number)
+        self.rc_points = rc_points
