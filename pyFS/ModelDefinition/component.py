@@ -149,3 +149,16 @@ class RCTable(Component):
     def __init__(number, rc_points):
         Component.__init__(self, number)
         self.rc_points = rc_points
+
+
+class ICTable:
+
+    def __init__(self, number, IC0, IC1, IC2, IC3, IC4, IC5, IC6):
+        Component.__init__(self, number)
+        self.IC0 = IC0
+        self.IC1 = IC1
+        self.IC2 = IC2
+        self.IC3 = IC3
+        self.IC4 = IC4
+        self.IC5 = IC5
+        self.IC6 = IC6
