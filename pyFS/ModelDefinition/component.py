@@ -62,7 +62,7 @@ class Restraint(Component):
 
 class Geometry(Component):
 
-    def __init__(self, code, type, name, designation, graphics_type,
+    def __init__(self, number, type, name, designation, graphics_type,
                  graphics_offset_y, graphics_offset_z, pipe_OD, pipe_WT, area,
                  I_zz, I_yy, J, A_y, A_z, P_yy, G, S_1_y, S_1_z, S_2_y, S_2_z,
                  S_3_y, S_3_z, S_4_y, S_4_z, G_2, corrosion_allowance,
@@ -101,3 +101,34 @@ class Geometry(Component):
         self.insulation_density = insulation_density
         self.lining_thickness = lining_thickness
         self.lining_density = lining_density
+
+
+class Material(Component):
+
+    def __init__(self, code, E, G, mu, rho, alpha, yield_strength, name, UTS,
+                 pipework_UTS, cold_allowable_stress, quality_factor,
+                 pressure_coefficient, temperature_table):
+        Component.__init__(self, number)
+        self.E = E
+        Self.G = G
+        self.mu = mu
+        self.rho = rho
+        self.alpha = alpha
+        self.yield_strength = yield_strength
+        self.name = name
+        self.UTS = UTS
+        self.pipework_UTS = pipework_UTS
+        self.cold_allowable_stress = cold_allowable_stress
+        self.quality_factor = quality_factor
+        self.pressure_coefficient = pressure_coefficient
+        self.temperature_table = temperature_table
+
+    def add_temperature_point(self, temperature, alpha, E, allowable_stress):
+
+        self.temperature_table.append([temperature, alpha, E,
+                                       allowable_stress])
+
+                                           def add_temperature_point(self, temperature, alpha, E, allowable_stress):
+
+        self.temperature_table.append([temperature, alpha, E,
+                                       allowable_stress])
