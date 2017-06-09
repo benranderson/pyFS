@@ -7,15 +7,11 @@ Designing the object heirarchy this way allows multiple ModelDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Load,
 Analysis of Post-Processing objects in a single pyFS model.
 """
-
-from pyFS.ModelDefinition.node import Node
-from pyFS.ModelDefinition.beam_element import BeamElement
-from pyFS.ModelDefinition.model_parser import ModelParser
-from pyFS.ModelDefinition.spring_couple import SpringCouple
-from pyFS.ModelDefinition.restraint import Restraint
-from pyFS.BatchController.batch_controller import BatchController
-from pyFS.BatchController.commands import *
-import pyFS.SystemUtils as util
+from .mdl import Node, BeamElement, SpringCouple, Restraint
+from .model_parser import ModelParser
+from ..BatchController.batch_controller import BatchController
+from ..BatchController.commands import *
+from .. import SystemUtils as util
 
 import datetime
 import os

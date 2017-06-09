@@ -1,5 +1,6 @@
 import os
 import sys
+
 if 'win' in sys.platform:
     from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
 
