@@ -66,3 +66,24 @@ class ModelParser:
                                                 bool(int(split_line[5])),
                                                 bool(int(split_line[6])),
                                                 bool(int(split_line[7]))))
+
+                elif split_line[0].lower() == 'gtab1':
+                    number = split_line[1]
+                    index = next((i for i, item in enumerate(self.geometries)
+                                 if item.number == number), None)
+                    if index is not None:
+                        g = self.geometries[index]
+                        g.type = int(split_line[2])
+                        g.name = split_line[3]
+                        g.designation = split_line[4]
+                        g.graphics_type = split_line[5]
+                        g.graphics_offset_y = split_line[6]
+                        g.graphics_offset_z = split_line[7]
+                    else:
+                        self.geometries.add_item(
+                            Geometry(number=number, type=int(split_line[2]),
+                                     name=split_line[3],
+                                     designation=split_line[4],
+                                     graphics_type=split_line[5],
+                                     graphics_offset_y=split_line[6],
+                                     graphics_offset_z=split_line[7]))

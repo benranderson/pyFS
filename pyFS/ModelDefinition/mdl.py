@@ -6,6 +6,9 @@ class Component:
     def __repr__(self):
         return '{0}: {1}'.format(self.__class__.__name__, self.number)
 
+    def MDLFormat(self):
+        return ''
+
 
 class Node(Component):
 
@@ -15,6 +18,10 @@ class Node(Component):
         self.y = y_coord
         self.z = z_coord
         self.CSYS = CSYS
+
+    def MDLFormat(self):
+        return ('N,' + str(self.number) + ',' + str(self.x) + ',' +
+                str(self.y) + ',' + str(self.z) + ',' + str(self.CSYS) + '\n')
 
 
 class BeamElement(Component):
@@ -35,6 +42,14 @@ class BeamElement(Component):
         self.CO = CO
         self.bend_radius = bend_radius
 
+    def MDLFormat(self):
+        return ('E,' + str(self.number) + ',' + str(self.N1) + ',' +
+                str(self.N2) + ',' + str(self.N3) + ',' + str(self.rotation) +
+                ',' + str(self.geometry) + ',' + str(self.material) + ',' +
+                str(self.relZ) + ',' + str(self.relY) + ',' + str(self.taper) +
+                ',' + str(self.type) + ',' + str(self.CO) + ',' +
+                str(self.bend_radius) + '\n')
+
 
 class SpringCouple(Component):
 
@@ -48,6 +63,12 @@ class SpringCouple(Component):
         self.spring_constant_table = spring_constant_table
         self.CSYS = CSYS
 
+    def MDLFormat(self):
+        return ('SC,' + str(self.number) + ',' + str(self.N1) + ',' +
+                str(self.N2) + ',' + str(self.rotation) + ',' +
+                str(self.reference_element) + ',' +
+                str(self.spring_constant_table) + ',' + str(self.CSYS) + '\n')
+
 
 class Restraint(Component):
 
@@ -59,6 +80,12 @@ class Restraint(Component):
         self.Rx = Rx
         self.Ry = Ry
         self.Rz = Rz
+
+    def MDLFormat(self):
+        return ('REST,' + str(self.number) + ',' + str(int(self.Tx)) + ',' +
+                str(int(self.Ty)) + ',' + str(int(self.Tz)) + ',' +
+                str(int(self.Rx)) + ',' + str(int(self.Ry)) + ',' +
+                str(int(self.Rz)) + '\n')
 
 
 class Geometry(Component):

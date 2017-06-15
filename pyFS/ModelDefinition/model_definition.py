@@ -108,6 +108,31 @@ class ModelDefinition:
             raise ValueError("One degree of freedom must be retrained (True)")
         self.restraints.add_item(Restraint(number, Tx, Ty, Tz, Rx, Ry, Rz))
 
+    def create_geometry(self, number=0, type=0, name='', designation='',
+                        graphics_type=0, graphics_offset_y=0,
+                        graphics_offset_z=0, pipe_OD=0, pipe_WT=0, area=0,
+                        I_zz=0, I_yy=0, J=0, A_y=0, A_z=0, P_yy=0, G=0,
+                        S_1_y=0, S_1_z=0, S_2_y=0, S_2_z=0, S_3_y=0, S_3_z=0,
+                        S_4_y=0, S_4_z=0, G_2=0, corrosion_allowance=0,
+                        mill_tolerance=0, contents_density=0,
+                        insultation_thickness=0, insulation_density=0,
+                        lining_thickness=0, lining_density=0):
+        if pipe_OD == pipe_WT == area == I_yy == I_zz == 0:
+            raise ValueError("Must provide pipe sizes or section definition")
+        if number == 0:
+            number = len(self.geometries) + 1
+        self.geometries.add_item(Geometry(number, type, name, designation,
+                                          graphics_type, graphics_offset_y,
+                                          graphics_offset_z, pipe_OD, pipe_WT,
+                                          area, I_zz, I_yy, J, A_y, A_z, P_yy,
+                                          G, S_1_y, S_1_z, S_2_y, S_2_z, S_3_y,
+                                          S_3_z, S_4_y, S_4_z, G_2,
+                                          corrosion_allowance, mill_tolerance,
+                                          contents_density,
+                                          insultation_thickness,
+                                          insulation_density, lining_thickness,
+                                          lining_density))
+
     def _model_exists(self):
         file_path = os.path.join(self.path, self.name + '.xyz')
         file = pathlib.Path(file_path)
@@ -152,28 +177,10 @@ class ModelDefinition:
     def write_MDL_file(self):
         path = os.path.join(self.path, self.name + '.mdl')
         with open(path, 'w') as MDL:
-            MDL.writelines('N,' + str(n.number) + ',' + str(n.x) + ',' +
-                           str(n.y) + ',' + str(n.z) + ',' + str(n.CSYS) +
-                           '\n' for n in self.nodes)
-            MDL.writelines('E,' + str(e.number) + ',' + str(e.N1) + ',' +
-                           str(e.N2) + ',' + str(e.N3) + ',' +
-                           str(e.rotation) + ',' + str(e.geometry) + ',' +
-                           str(e.material) + ',' + str(e.relZ) + ',' +
-                           str(e.relY) + ',' + str(e.taper) + ',' +
-                           str(e.type) + ',' + str(e.CO) + ',' +
-                           str(e.bend_radius) + '\n'
-                           for e in self.beam_elements)
-            MDL.writelines('SC,' + str(sc.number) + ',' + str(sc.N1) + ',' +
-                           str(sc.N2) + ',' + str(sc.rotation) + ',' +
-                           str(sc.reference_element) + ',' +
-                           str(sc.spring_constant_table) + ',' +
-                           str(sc.CSYS) + '\n'
-                           for sc in self.couples)
-            MDL.writelines('REST,' + str(r.number) + ',' + str(int(r.Tx)) +
-                           ',' + str(int(r.Ty)) + ',' + str(int(r.Tz)) +
-                           ',' + str(int(r.Rx)) + ',' + str(int(r.Ry)) +
-                           ',' + str(int(r.Rz)) + '\n'
-                           for r in self.restraints)
+            MDL.writelines(n.MDLFormat() for n in self.nodes)
+            MDL.writelines(e.MDLFormat() for e in self.beam_elements)
+            MDL.writelines(sc.MDLFormat() for sc in self.couples)
+            MDL.writelines(r.MDLFormat() for r in self.restraints)
 
     def __repr__(self):
         return 'Model: {0}'.format(self.name)
