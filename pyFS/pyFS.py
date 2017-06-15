@@ -1,5 +1,5 @@
-from ModelDefinition import ModelDefinition
-from . import SystemUtils as util
+from pyFS.ModelDefinition.model_definition import ModelDefinition
+import pyFS.SystemUtils as util
 
 import datetime
 import os
