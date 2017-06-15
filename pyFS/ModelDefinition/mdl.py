@@ -163,3 +163,35 @@ class ICTable:
         self.IC4 = IC4
         self.IC5 = IC5
         self.IC6 = IC6
+
+
+class MDLList(list):
+
+    def __init__(self, data=[]):
+        list.__init__(self, data)
+    
+    def __getslice__(self, i, j):
+        return MDLList(list.__getslice__(self, i, j))
+
+    def __add__(self, other):
+        return MDLList(list.__add__(self, other))
+
+    def __mul__(self, other):
+        return MDLList(list.__mul__(self, other))
+
+    def __getitem__(self, item):
+        result = list.__getitem__(self, item)
+        try:
+            return MDLList(result)
+        except TypeError:
+            return result
+
+    def add_item(self, new_item):
+        index = next((i for i, item in enumerate(self) 
+                    if item.number == new_item.number), None)
+        if index is not None:
+            self[index] = new_item
+        else:
+            self.append(new_item)
+        
+            
