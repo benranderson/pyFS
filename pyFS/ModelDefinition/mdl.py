@@ -4,7 +4,7 @@ class Component:
         self.number = number
 
     def __repr__(self):
-        return '{0}: {1}'.format(self.__str__, self.number)
+        return '{0}: {1}'.format(self.__class__.__name__, self.number)
 
 
 class Node(Component):
@@ -15,6 +15,7 @@ class Node(Component):
         self.y = y_coord
         self.z = z_coord
         self.CSYS = CSYS
+        
 
 
 class BeamElement(Component):

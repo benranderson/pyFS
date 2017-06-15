@@ -28,3 +28,7 @@ def update_model_nam(model_name, model_path):
 
 def generate_nam_data(model_name, model_path):
     return '{0}\{1}\n{1}\n{0}'.format(model_path, model_name)
+
+def in_list(object_list, number):
+    return next((i for i, item in enumerate(object_list) 
+                    if item.number == number), None)

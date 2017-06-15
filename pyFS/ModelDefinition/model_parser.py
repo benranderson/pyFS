@@ -1,4 +1,4 @@
-from .component import Node, BeamElement, SpringCouple, Restraint
+from .mdl import Node, BeamElement, SpringCouple, Restraint
 import os
 
 

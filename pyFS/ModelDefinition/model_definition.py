@@ -73,7 +73,12 @@ class ModelDefinition:
     def create_node(self, number=0, x=0, y=0, z=0, CSYS=0):
         if number == 0:
             number = len(self.nodes) + 1
-        self.nodes.append(Node(number, x, y, z))
+        n = Node(number, x, y, z)
+        index = util.in_list(self.nodes, number)
+        if index is not None:
+            self.nodes[index] = n
+        else:
+            self.nodes.append(n)
 
     def create_beam_element(self, number=0, N1=0, N2=0, N3=0, rotation=0,
                             geometry=0, material=0, relZ=0,
@@ -82,12 +87,16 @@ class ModelDefinition:
         if number == 0:
             number = len(self.beam_elements) + 1
         if N1 == 0:
-            N1 = len(self.nodes) + 1
+            N1 = len(self.beam_elements) + 1
         if N2 == 0:
             N2 = N1 + 1
-        self.beam_elements.append(BeamElement(number, N1, N2, N3, rotation,
-                                              geometry, material, relZ, relzY,
-                                              taper, type, CO, bend_radius))
+        b = BeamElement(number, N1, N2, N3, rotation, geometry, material, relZ,
+                        relzY, taper, type, CO, bend_radius)
+        index = util.in_list(self.beam_elements, number)
+        if index is not None:
+            self.beam_elements[index] = b
+        else:
+            self.beam_elements.append(b)
 
     def create_couple(self, number=0, N1=0, N2=0, rotation=0,
                       reference_element=0, spring_constant_table=0, CSYS=0):
@@ -97,15 +106,24 @@ class ModelDefinition:
             N1 = len(self.nodes) + 1
         if N2 == 0:
             N2 = N1 + 1
-        self.couples.append(SpringCouple(number, N1, N2, rotation,
-                                         reference_element,
-                                         spring_constant_table, CSYS))
+        sc = SpringCouple(number, N1, N2, rotation, reference_element,
+                          spring_constant_table, CSYS)
+        index = util.in_list(self.couples, number)
+        if index is not None:
+            self.couples[index] = sc
+        else:
+            self.couples.append(sc)
 
-    def create_restraint(self, node, Tx=False, Ty=False, Tz=False, Rx=False,
+    def create_restraint(self, number, Tx=False, Ty=False, Tz=False, Rx=False,
                          Ry=False, Rz=False):
         if not (Tx or Ty or Tz or Rx or Ry or Rz):
             raise ValueError("One degree of freedom must be retrained (True)")
-        self.restraints.append(Restraint(node, Tx, Ty, Tz, Rx, Ry, Rz))
+        r = Restraint(number, Tx, Ty, Tz, Rx, Ry, Rz)
+        index = util.in_list(self.restraints, number)
+        if index is not None:
+            self.restraints[index] = r
+        else:
+            self.restraints.append(r)
 
     def _model_exists(self):
         file_path = os.path.join(self.path, self.name + '.xyz')
@@ -168,7 +186,7 @@ class ModelDefinition:
                            str(sc.spring_constant_table) + ',' +
                            str(sc.CSYS) + '\n'
                            for sc in self.couples)
-            MDL.writelines('REST,' + str(r.Node) + ',' + str(int(r.Tx)) +
+            MDL.writelines('REST,' + str(r.number) + ',' + str(int(r.Tx)) +
                            ',' + str(int(r.Ty)) + ',' + str(int(r.Tz)) +
                            ',' + str(int(r.Rx)) + ',' + str(int(r.Ry)) +
                            ',' + str(int(r.Rz)) + '\n'
