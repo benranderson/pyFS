@@ -1,8 +1,10 @@
 import os
 import sys
 
+
 if 'win' in sys.platform:
     from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
+
 
 def get_FS2000_install_directory():
     reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
@@ -28,4 +30,3 @@ def update_model_nam(model_name, model_path):
 
 def generate_nam_data(model_name, model_path):
     return '{0}\{1}\n{1}\n{0}'.format(model_path, model_name)
-

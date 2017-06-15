@@ -102,7 +102,6 @@ class ModelDefinition:
                                            reference_element,
                                            spring_constant_table, CSYS))
 
-
     def create_restraint(self, number, Tx=False, Ty=False, Tz=False, Rx=False,
                          Ry=False, Rz=False):
         if not (Tx or Ty or Tz or Rx or Ry or Rz):

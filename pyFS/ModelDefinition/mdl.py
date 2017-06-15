@@ -15,7 +15,6 @@ class Node(Component):
         self.y = y_coord
         self.z = z_coord
         self.CSYS = CSYS
-        
 
 
 class BeamElement(Component):
@@ -169,7 +168,7 @@ class MDLList(list):
 
     def __init__(self, data=[]):
         list.__init__(self, data)
-    
+
     def __getslice__(self, i, j):
         return MDLList(list.__getslice__(self, i, j))
 
@@ -187,11 +186,9 @@ class MDLList(list):
             return result
 
     def add_item(self, new_item):
-        index = next((i for i, item in enumerate(self) 
-                    if item.number == new_item.number), None)
+        index = next((i for i, item in enumerate(self)
+                      if item.number == new_item.number), None)
         if index is not None:
             self[index] = new_item
         else:
             self.append(new_item)
-        
-            
