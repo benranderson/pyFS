@@ -130,11 +130,11 @@ class Geometry(Component):
         self.insulation_density = insulation_density
         self.lining_thickness = lining_thickness
         self.lining_density = lining_density
-        
+
     def MDLFormat(self):
         return ('GTAB1,' + str(self.number) + ',' + str(self.type) + ',' +
                 self.name + ',' + str(self.designation) + ',' +
-                str(self.graphics_type) + ',' +str(self.graphics_offset_y) +
+                str(self.graphics_type) + ',' + str(self.graphics_offset_y) +
                 ',' + str(self.graphics_offset_z) + '\n' +
                 'GTAB2,' + str(self.number) + ',' + str(self.pipe_OD) + ',' +
                 str(self.pipe_WT) + ',' + str(self.area) + ',' +
@@ -150,7 +150,7 @@ class Geometry(Component):
                 str(self.S_3_z) + ',' + str(self.S_4_y) + ',' +
                 str(self.S_4_z) + ',' + str(self.G_2) + '\n' +
                 'GTABP,' + str(self.number) + ',' +
-                str(self.corrosion_allowance) + ',' + 
+                str(self.corrosion_allowance) + ',' +
                 str(self.mill_tolerance) + ',' + str(self.contents_density) +
                 ',' + str(self.insulation_thickness) + ',' +
                 str(self.insulation_density) + ',' +

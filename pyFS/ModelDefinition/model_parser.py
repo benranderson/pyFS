@@ -71,7 +71,7 @@ class ModelParser:
                     self.read_GTAB(split_line)
 
     def read_GTAB(self, split_line):
-        attributes = [[['type', int], ['name', str], ['designation', int], 
+        attributes = [[['type', int], ['name', str], ['designation', int],
                        ['graphics_type', self.check_q_mark],
                        ['graphics_offset_y', float],
                        ['graphics_offset_z', float]],
@@ -102,13 +102,13 @@ class ModelParser:
             for index, [attribute, method] in enumerate(attributes[-1]):
                 setattr(g, attribute, method(split_line[index + 2]))
         else:
-            for index, [attribute, method] in enumerate(attributes[int(split_line[0][-1])-1]):
+            for index, [attribute, method] in enumerate(
+                    attributes[int(split_line[0][-1])-1]):
                 setattr(g, attribute, method(split_line[index + 2]))
         self.geometries.add_item(g)
-        
+
     def check_q_mark(self, val):
         if not val.isnumeric():
             return 0
         else:
             return int(val)
-        
