@@ -1,4 +1,4 @@
-from .mdl import Node, BeamElement, SpringCouple, Restraint, MDLList
+from .mdl import Node, BeamElement, SpringCouple, Restraint, Geometry, MDLList
 import os
 
 
@@ -67,23 +67,48 @@ class ModelParser:
                                                 bool(int(split_line[6])),
                                                 bool(int(split_line[7]))))
 
-                elif split_line[0].lower() == 'gtab1':
-                    number = split_line[1]
-                    index = next((i for i, item in enumerate(self.geometries)
-                                 if item.number == number), None)
-                    if index is not None:
-                        g = self.geometries[index]
-                        g.type = int(split_line[2])
-                        g.name = split_line[3]
-                        g.designation = split_line[4]
-                        g.graphics_type = split_line[5]
-                        g.graphics_offset_y = split_line[6]
-                        g.graphics_offset_z = split_line[7]
-                    else:
-                        self.geometries.add_item(
-                            Geometry(number=number, type=int(split_line[2]),
-                                     name=split_line[3],
-                                     designation=split_line[4],
-                                     graphics_type=split_line[5],
-                                     graphics_offset_y=split_line[6],
-                                     graphics_offset_z=split_line[7]))
+                elif (split_line[0].lower()[:-1] == 'gtab'):
+                    self.read_GTAB(split_line)
+
+    def read_GTAB(self, split_line):
+        attributes = [[['type', int], ['name', str], ['designation', int], 
+                       ['graphics_type', self.check_q_mark],
+                       ['graphics_offset_y', float],
+                       ['graphics_offset_z', float]],
+                      [['pipe_OD', float], ['pipe_WT', float], ['area', float],
+                       ['I_yy', float], ['I_zz', float], ['J', float]],
+                      [['A_y', float], ['A_z', float], ['P_yy', float],
+                       ['P_zz', float], ['G', float]],
+                      [['S_1_y', float], ['S_1_z', float], ['S_2_y', float],
+                       ['S_2_z', float]],
+                      [['S_3_y', float], ['S_3_z', float], ['S_4_y', float],
+                       ['S_4_z', float], ['G_2', float]],
+                      [['corrosion_allowance', float],
+                       ['mill_tolerance', float], ['contents_density', float],
+                       ['insultation_thickness', float],
+                       ['insulation_density', float],
+                       ['lining_thickness', float], ['lining_density', float]]]
+        number = int(split_line[1])
+        index = next((i for i, item in enumerate(self.geometries)
+                     if item.number == number), None)
+        if index is not None:
+            g = self.geometries[index]
+        else:
+            g = Geometry(number, 0, '', 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                         0.0)
+        if split_line[0].lower()[-1] == 'p':
+            for index, [attribute, method] in enumerate(attributes[-1]):
+                setattr(g, attribute, method(split_line[index + 2]))
+        else:
+            for index, [attribute, method] in enumerate(attributes[int(split_line[0][-1])-1]):
+                setattr(g, attribute, method(split_line[index + 2]))
+        self.geometries.add_item(g)
+        
+    def check_q_mark(self, val):
+        if not val.isnumeric():
+            return 0
+        else:
+            return int(val)
+        

@@ -125,8 +125,8 @@ class ModelDefinition:
                                           graphics_type, graphics_offset_y,
                                           graphics_offset_z, pipe_OD, pipe_WT,
                                           area, I_zz, I_yy, J, A_y, A_z, P_yy,
-                                          G, S_1_y, S_1_z, S_2_y, S_2_z, S_3_y,
-                                          S_3_z, S_4_y, S_4_z, G_2,
+                                          P_zz, G, S_1_y, S_1_z, S_2_y, S_2_z,
+                                          S_3_y, S_3_z, S_4_y, S_4_z, G_2,
                                           corrosion_allowance, mill_tolerance,
                                           contents_density,
                                           insultation_thickness,
@@ -148,7 +148,7 @@ class ModelDefinition:
         self.beam_elements = mp.beam_elements
         self.couples = mp.couples
         self.restraints = mp.restraints
-        self.geometries = MDLList()
+        self.geometries = mp.geometries
         self.couple_properties = MDLList()
         self.materials = MDLList()
         self.rc_tables = MDLList()
@@ -181,6 +181,7 @@ class ModelDefinition:
             MDL.writelines(e.MDLFormat() for e in self.beam_elements)
             MDL.writelines(sc.MDLFormat() for sc in self.couples)
             MDL.writelines(r.MDLFormat() for r in self.restraints)
+            MDL.writelines(g.MDLFormat() for g in self.geometries)
 
     def __repr__(self):
         return 'Model: {0}'.format(self.name)
