@@ -30,7 +30,7 @@ class ModelDefinition:
                  overwrite_model=False, initialise_model=False):
         """
         A model definition can be created in one of four manners:
-            1.  Create a new model, unitialised
+            1.  Create a new model, uninitialised
                 (overwrite_model=True, initialise_model=False)
                 This essentially creates a model structure within pyFS
                 containing the model definition data for a new model. The model
@@ -40,7 +40,7 @@ class ModelDefinition:
                 model of the same name in the same directory will be
                 overwritten.
 
-            2.  Create a new model, itialised
+            2.  Create a new model, initialised
                 (overwrite_model=True, initialise_model=True)
                 As 1. but with a blank .MDL file created and initialised
                 using "WINFRAM I". This will create FS2000 model files and a

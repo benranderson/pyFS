@@ -1,4 +1,5 @@
-from .mdl import Node, BeamElement, SpringCouple, Restraint, Geometry, MDLList
+from .mdl import (MDLList, Node, BeamElement, SpringCouple, Restraint,
+                  Geometry, Material)
 import os
 
 
@@ -69,6 +70,16 @@ class ModelParser:
 
                 elif (split_line[0].lower()[:-1] == 'gtab'):
                     self.read_GTAB(split_line)
+
+                elif (split_line[0].lower() == 'mtab'):
+                    self.materials.add_item(Material(int(split_line[1]),
+                                                     float(split_line[1]),
+                                                     float(split_line[1]),
+                                                     float(split_line[1]),
+                                                     float(split_line[1]),
+                                                     float(split_line[1]),
+                                                     split_line[1],
+                                                     float(split_line[1])))
 
     def read_GTAB(self, split_line):
         attributes = [[['type', int], ['name', str], ['designation', int],

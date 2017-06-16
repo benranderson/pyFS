@@ -11,6 +11,8 @@ if 'win' in sys.platform:
 class pyFS:
 
     def __init__(self, path, name, initialise_model=False):
+        if not util.is_path_exists_or_creatable(path):
+            raise ValueError('Model path is not valid.')
         self.path = path
         self.name = name
         if initialise_model:

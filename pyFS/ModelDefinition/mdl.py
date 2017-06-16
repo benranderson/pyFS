@@ -160,7 +160,7 @@ class Geometry(Component):
 
 class Material(Component):
 
-    def __init__(self, code, E, G, mu, rho, alpha, yield_strength, name, UTS,
+    def __init__(self, number, E, G, mu, rho, alpha, yield_strength, name, UTS,
                  pipework_UTS, cold_allowable_stress, quality_factor,
                  pressure_coefficient, temperature_table):
         Component.__init__(self, number)
@@ -177,6 +177,9 @@ class Material(Component):
         self.quality_factor = quality_factor
         self.pressure_coefficient = pressure_coefficient
         self.temperature_table = temperature_table
+
+    def MDLFormat(self):
+        pass
 
     def add_temperature_point(self, temperature, alpha, E, allowable_stress):
 
