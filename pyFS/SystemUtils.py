@@ -7,10 +7,13 @@ if 'win' in sys.platform:
     from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
 
 def get_FS2000_install_directory():
-    reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
-    key = OpenKey(reg, 'SOFTWARE\Wow6432Node\FS2000\Setup')
-    install_directory = EnumValue(key, 0)[1]
-    return install_directory
+    try:
+        reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
+        key = OpenKey(reg, 'SOFTWARE\Wow6432Node\FS2000\Setup')
+        install_directory = EnumValue(key, 0)[1]
+        return install_directory
+    except:
+        raise RuntimeError('FS2000 must be installed')
 
 
 def update_nam(nam_type, model_name, model_path):
