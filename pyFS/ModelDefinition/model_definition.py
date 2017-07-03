@@ -7,7 +7,8 @@ Designing the object heirarchy this way allows multiple ModelDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Load,
 Analysis of Post-Processing objects in a single pyFS model.
 """
-from .mdl import Node, BeamElement, SpringCouple, Restraint, MDLList
+from .mdl import (Node, BeamElement, SpringCouple, Restraint, MDLList,
+                  Point)
 from .model_parser import ModelParser
 from ..BatchController.batch_controller import BatchController
 from ..BatchController.commands import *
@@ -15,6 +16,7 @@ from .. import SystemUtils as util
 
 import datetime
 import os
+import shutil
 import subprocess
 import pathlib
 
@@ -62,13 +64,19 @@ class ModelDefinition:
         """
         self.path = path
         self.name = name
+        self.install_directory = util.get_FS2000_install_directory()
+
         if not os.path.exists(self.path):
             os.makedirs(self.path)
-        self.install_directory = util.get_FS2000_install_directory()
-        if (not overwrite_model) and self._model_exists():
-            self._read_model_definition()
-        else:
+
+        if overwrite_model:
             self._initialise_model_definition()
+        else:
+            if os.path.exists(os.path.join(self.path, self.name + '.mdl')):
+                self._read_model_definition()
+            else:
+                self._initialise_model_definition()
+
         if initialise_model:
             self.initialise_model_definition()
 
@@ -76,6 +84,17 @@ class ModelDefinition:
         if number == 0:
             number = len(self.nodes) + 1
         self.nodes.add_item(Node(number, x, y, z))
+
+    def create_point(self, x=0, y=0, z=0):
+        return Point(x, y, z)
+        
+    def select_nodes_by_points(self, point_1, point_2):
+        return [node in self.nodes if (node.x > min(point_1.x, point_2.x) and
+                                       node.x < max(point_1.x, point_2.x) and
+                                       node.y > min(point_1.y, point_2.y) and
+                                       node.y < max(point_1.y, point_2.y) and
+                                       node.z > min(point_1.z, point_2.z) and
+                                       node.z < max(point_1.z, point_2.z))]
 
     def create_beam_element(self, number=0, N1=0, N2=0, N3=0, rotation=0,
                             geometry=0, material=0, relZ=0,

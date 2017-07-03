@@ -208,7 +208,7 @@ class RCTable(Component):
         self.rc_points = rc_points
 
 
-class ICTable:
+class ICTable(Component):
 
     def __init__(self, number, IC0, IC1, IC2, IC3, IC4, IC5, IC6):
         Component.__init__(self, number)
@@ -249,3 +249,10 @@ class MDLList(list):
             self[index] = new_item
         else:
             self.append(new_item)
+
+class Point:
+
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
