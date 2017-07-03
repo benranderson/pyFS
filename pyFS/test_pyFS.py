@@ -30,7 +30,8 @@ def test_default_uninitialised_pyFS_name(uninitialised_pyFS):
 
 @pytest.fixture
 def initialised_pyFS(tmpdir):
-    return pyFS.pyFS(str(tmpdir.join(initialised_folder)), initialised_name, initialise_model=True)
+    return pyFS.pyFS(str(tmpdir.join(initialised_folder)), initialised_name,
+                     initialise_model=True)
 
 def test_default_initialised_pyFS(initialised_pyFS, tmpdir):
     assert initialised_pyFS.path == str(tmpdir.join(initialised_folder))

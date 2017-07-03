@@ -2,6 +2,7 @@ from .model_definition import ModelDefinition
 import pytest
 import os
 
+# This represents mode 1 in __init__()
 @pytest.fixture
 def new_uninitialised_ModelDefinition(tmpdir):
     return ModelDefinition(str(tmpdir.join('new_unini')), 'new_unini',

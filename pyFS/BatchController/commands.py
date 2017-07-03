@@ -21,3 +21,9 @@ class Winfram(Command):
 
     def __init__(self, *commands):
         Command.__init__(self, list(commands), has_trailing_slash=False)
+
+
+class Modmerge(Command):
+
+    def __init__(self, *commands):
+        Command.__init__(self, list(commands))

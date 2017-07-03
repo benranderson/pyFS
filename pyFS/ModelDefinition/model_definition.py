@@ -62,6 +62,8 @@ class ModelDefinition:
         """
         self.path = path
         self.name = name
+        if not os.path.exists(self.path):
+            os.makedirs(self.path)
         self.install_directory = util.get_FS2000_install_directory()
         if (not overwrite_model) and self._model_exists():
             self._read_model_definition()
@@ -141,6 +143,7 @@ class ModelDefinition:
     def _initialise_model_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
+        self.write_MDL_file()
 
     def _read_model_definition(self):
         mp = ModelParser(self.path, self.name)
@@ -167,7 +170,7 @@ class ModelDefinition:
 
     def _create_model_files(self):
         self.write_MDL_file()
-        self.initialise_model()
+        self.initialise_model_definition()
 
     def initialise_model_definition(self):
         bc = BatchController(self.path, self.name)
@@ -176,7 +179,7 @@ class ModelDefinition:
 
     def write_MDL_file(self):
         path = os.path.join(self.path, self.name + '.mdl')
-        with open(path, 'w') as MDL:
+        with open(path, 'w+') as MDL:
             MDL.writelines(n.MDLFormat() for n in self.nodes)
             MDL.writelines(e.MDLFormat() for e in self.beam_elements)
             MDL.writelines(sc.MDLFormat() for sc in self.couples)
