@@ -8,7 +8,7 @@ defined in a pyFS list and these can be used  with single or multiple Load,
 Analysis of Post-Processing objects in a single pyFS model.
 """
 from .mdl import (Node, BeamElement, SpringCouple, Restraint, MDLList,
-                  Point)
+                  Point, Geometry, Material, SpringTable, RCTable, ICTable)
 from .model_parser import ModelParser
 from ..BatchController.batch_controller import BatchController
 from ..BatchController.commands import *
@@ -153,6 +153,31 @@ class ModelDefinition:
                                           insultation_thickness,
                                           insulation_density, lining_thickness,
                                           lining_density))
+                                          
+    def create_material(self, number=0, E=0, G=0, mu=0, rho=0, alpha=0,
+                        yield_strength=0, name='', UTS=0, pipework_UTS=0,
+                        cold_allowable_stress=0, quality_factor=0,
+                        pressure_coefficient=0, temperature_table=[]):
+
+        if number == 0:
+            number = len(self.materials) + 1
+        self.geometries.add_item(Material(number, E, G, mu, rho, alpha,
+                                          yield_strength, name, UTS,
+                                          pipework_UTS, cold_allowable_stress,
+                                          quality_factor, pressure_coefficient,
+                                          temperature_table))
+
+    def create_couple_property(self, number=0, K1=0, K2=0, K3=0, K4=0, K5=0,
+                               K6=0, type=0, CO=0)
+        if number == 0:
+            number = len(self.couple_properties) + 1
+        self.couple_properties.add_item(SpringTable(number, K1, K2, K3, K4, K5,
+                                                    K6, type, CO))
+
+    def create_RC_table(self, number, rc_points=[]):
+        if number == 0:
+            number = len(self.rc_tables) + 1
+        self.rc_tables.add_item(RCTable(number, rc_points))
 
     def _model_exists(self):
         file_path = os.path.join(self.path, self.name + '.xyz')
@@ -171,8 +196,8 @@ class ModelDefinition:
         self.couples = mp.couples
         self.restraints = mp.restraints
         self.geometries = mp.geometries
-        self.couple_properties = MDLList()
-        self.materials = MDLList()
+        self.couple_properties = mp.couple_properties
+        self.materials = mp.materials
         self.rc_tables = MDLList()
         self.ic_tables = MDLList()
 

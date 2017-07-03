@@ -1,5 +1,5 @@
 from .mdl import (MDLList, Node, BeamElement, SpringCouple, Restraint,
-                  Geometry, Material)
+                  Geometry, Material, SpringTable, RCTable, ICTable)
 import os
 
 
@@ -73,13 +73,29 @@ class ModelParser:
 
                 elif (split_line[0].lower() == 'mtab'):
                     self.materials.add_item(Material(int(split_line[1]),
-                                                     float(split_line[1]),
-                                                     float(split_line[1]),
-                                                     float(split_line[1]),
-                                                     float(split_line[1]),
-                                                     float(split_line[1]),
-                                                     split_line[1],
-                                                     float(split_line[1])))
+                                                     float(split_line[2]),
+                                                     float(split_line[3]),
+                                                     float(split_line[4]),
+                                                     float(split_line[5]),
+                                                     float(split_line[6]),
+                                                     split_line[7],
+                                                     float(split_line[8])))
+
+                elif (split_line[0].lower() == 'stab'):
+                    self.couple_properties.add_item(SpringTable(
+                                                        int(split_line[1]),
+                                                        float(split_line[2]),
+                                                        float(split_line[3]),
+                                                        float(split_line[4]),
+                                                        float(split_line[5]),
+                                                        float(split_line[6]),
+                                                        float(split_line[7]),
+                                                        int(split_line[8]),
+                                                        int(split_line[9])))
+
+                elif (split_line[0].lower() == 'rc'):
+                    rc_points = [float(j) for j in [split_line[i:i + 1] for i in range(2, len(split_line), 2]]
+                    self.rc_tables.add_item(RCTable())
 
     def read_GTAB(self, split_line):
         attributes = [[['type', int], ['name', str], ['designation', int],
