@@ -18,6 +18,7 @@ class ModelParser:
         self.couple_properties = MDLList()
         self.materials = MDLList()
         self.rc_tables = MDLList()
+        self.ic_tables = MDLList()
         self.restraints = MDLList()
 
     def _read_input_file(self):
@@ -83,19 +84,31 @@ class ModelParser:
 
                 elif (split_line[0].lower() == 'stab'):
                     self.couple_properties.add_item(SpringTable(
-                                                        int(split_line[1]),
-                                                        float(split_line[2]),
-                                                        float(split_line[3]),
-                                                        float(split_line[4]),
-                                                        float(split_line[5]),
-                                                        float(split_line[6]),
-                                                        float(split_line[7]),
-                                                        int(split_line[8]),
-                                                        int(split_line[9])))
+                                                    int(split_line[1]),
+                                                    float(split_line[2]),
+                                                    float(split_line[3]),
+                                                    float(split_line[4]),
+                                                    float(split_line[5]),
+                                                    float(split_line[6]),
+                                                    float(split_line[7]),
+                                                    int(split_line[8]),
+                                                    int(split_line[9])))
 
                 elif (split_line[0].lower() == 'rc'):
-                    rc_points = [float(j) for j in [split_line[i:i + 1] for i in range(2, len(split_line), 2]]
-                    self.rc_tables.add_item(RCTable())
+                    rc_points = [float(j) for j in
+                                 [split_line[i:i + 1] for i in
+                                  range(2, len(split_line), 2)]]
+                    self.rc_tables.add_item(RCTable(int(split_line[1]),
+                                                    rc_points))
+
+                elif (split_line[0].lower() == 'ic'):
+                    self.ic_tables.add_item(ICTable(int(split_line[1]),
+                                                    int(split_line[2]),
+                                                    int(split_line[3]),
+                                                    int(split_line[4]),
+                                                    int(split_line[5]),
+                                                    int(split_line[6]),
+                                                    int(split_line[7]),))
 
     def read_GTAB(self, split_line):
         attributes = [[['type', int], ['name', str], ['designation', int],

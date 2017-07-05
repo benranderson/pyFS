@@ -6,6 +6,7 @@ import errno
 if 'win' in sys.platform:
     from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
 
+
 def get_FS2000_install_directory():
     try:
         reg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
@@ -45,6 +46,7 @@ https://msdn.microsoft.com/en-us/library/windows/desktop/ms681382%28v=vs.85%29.a
     Official listing of all such codes.
 '''
 
+
 def is_pathname_valid(pathname):
     '''
     `True` if the passed pathname is a valid pathname for the current OS;
@@ -59,18 +61,17 @@ def is_pathname_valid(pathname):
         root_dirname = os.environ.get('HOMEDRIVE', 'C:') \
             if sys.platform == 'win32' else os.path.sep
         assert os.path.isdir(root_dirname)
-        
-        root_dirname = root_dirname.rstrip(os.path.sep) + os.path.sep
 
+        root_dirname = root_dirname.rstrip(os.path.sep) + os.path.sep
 
         for pathname_part in pathname.split(os.path.sep):
             try:
                 os.lstat(root_dirname + pathname_part)
-            
+
             except OSError as exc:
                 if hasattr(exc, 'winerror'):
-                    if exc.winerror in {ERROR_INVALID_NAME, 
-                        ERROR_FILENAME_EXCED_RANGE}:
+                    if exc.winerror in {ERROR_INVALID_NAME,
+                                        ERROR_FILENAME_EXCED_RANGE}:
                         return False
                 elif exc.errno in {errno.ENAMETOOLONG, errno.ERANGE}:
                     return False
@@ -81,6 +82,7 @@ def is_pathname_valid(pathname):
     else:
         return True
 
+
 def is_path_creatable(pathname):
     '''
     `True` if the current user has sufficient permissions to create the passed
@@ -88,6 +90,7 @@ def is_path_creatable(pathname):
     '''
     dirname = os.path.dirname(pathname) or os.getcwd()
     return os.access(dirname, os.W_OK)
+
 
 def is_path_exists_or_creatable(pathname):
     '''

@@ -87,7 +87,7 @@ class ModelDefinition:
 
     def create_point(self, x=0, y=0, z=0):
         return Point(x, y, z)
-        
+
     def select_nodes_by_points(self, point_1, point_2):
         return [node in self.nodes if (node.x > min(point_1.x, point_2.x) and
                                        node.x < max(point_1.x, point_2.x) and
@@ -153,7 +153,7 @@ class ModelDefinition:
                                           insultation_thickness,
                                           insulation_density, lining_thickness,
                                           lining_density))
-                                          
+
     def create_material(self, number=0, E=0, G=0, mu=0, rho=0, alpha=0,
                         yield_strength=0, name='', UTS=0, pipework_UTS=0,
                         cold_allowable_stress=0, quality_factor=0,
@@ -168,7 +168,7 @@ class ModelDefinition:
                                           temperature_table))
 
     def create_couple_property(self, number=0, K1=0, K2=0, K3=0, K4=0, K5=0,
-                               K6=0, type=0, CO=0)
+                               K6=0, type=0, CO=0):
         if number == 0:
             number = len(self.couple_properties) + 1
         self.couple_properties.add_item(SpringTable(number, K1, K2, K3, K4, K5,
@@ -178,6 +178,13 @@ class ModelDefinition:
         if number == 0:
             number = len(self.rc_tables) + 1
         self.rc_tables.add_item(RCTable(number, rc_points))
+
+    def create_IC_table(self, number, IC0=0, IC1=0, IC2=0, IC3=0, IC4=0, IC5=0,
+                        IC6=0):
+        if number == 0:
+            number = len(self.ic_tables) + 1
+        self.ic_tables.add_item(ICTable(number, IC0, IC1, IC2, IC3, IC4, IC5,
+                                        IC6))
 
     def _model_exists(self):
         file_path = os.path.join(self.path, self.name + '.xyz')
@@ -198,8 +205,8 @@ class ModelDefinition:
         self.geometries = mp.geometries
         self.couple_properties = mp.couple_properties
         self.materials = mp.materials
-        self.rc_tables = MDLList()
-        self.ic_tables = MDLList()
+        self.rc_tables = mp.rc_tables
+        self.ic_tables = mp.ic_tables
 
     def _create_empty_lists(self):
         self.nodes = MDLList()

@@ -250,6 +250,7 @@ class MDLList(list):
         else:
             self.append(new_item)
 
+
 class Point:
 
     def __init__(self, x, y, z):
