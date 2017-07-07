@@ -20,3 +20,4 @@ class BatchController:
 
     def run_commands(self, commands):
         [run_command(command) for command in commands]
+        # blank comment
