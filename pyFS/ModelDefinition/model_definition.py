@@ -34,13 +34,12 @@ class ModelDefinition:
         A model definition can be created in one of four manners:
             1.  Create a new model, uninitialised
                 (overwrite_model=True, initialise_model=False)
-                This essentially creates a model structure within pyFS
-                containing the model definition data for a new model. The model
-                does not (yet) exist as an FS2000 model. This model could
-                not be opened within the GUI and would not exist persistently
-                unless it initialised explictly or written to MDL. Any existing
-                model of the same name in the same directory will be
-                overwritten.
+                This creates a model structure within pyFS containing the
+                model definition data for a new model. The model does not
+                (yet) exist as an FS2000 model. This model could not be opened
+                within the GUI and would not exist persistently unless it
+                initialised explictly or written to MDL. Any existing model of
+                the same name in the same directory will be overwritten.
 
             2.  Create a new model, initialised
                 (overwrite_model=True, initialise_model=True)
@@ -69,16 +68,14 @@ class ModelDefinition:
         if not os.path.exists(self.path):
             os.makedirs(self.path)
 
-        if overwrite_model:
-            self._initialise_model_definition()
+        if not overwrite_model and
+            os.path.exists(os.path.join(self.path, self.name + '.mdl')):
+            self._read_model_definition()
         else:
-            if os.path.exists(os.path.join(self.path, self.name + '.mdl')):
-                self._read_model_definition()
-            else:
-                self._initialise_model_definition()
+            self._initialise_model_definition()
 
         if initialise_model:
-            self.initialise_model_definition()
+            self.interpret_model_definition()
 
     def create_node(self, number=0, x=0, y=0, z=0, CSYS=0):
         if number == 0:
@@ -221,9 +218,9 @@ class ModelDefinition:
 
     def _create_model_files(self):
         self.write_MDL_file()
-        self.initialise_model_definition()
+        self.interpret_model_definition()
 
-    def initialise_model_definition(self):
+    def interpret_model_definition(self):
         bc = BatchController(self.path, self.name)
         c = Winfram('I')
         bc.run_command(c)
