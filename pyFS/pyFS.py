@@ -10,7 +10,8 @@ if 'win' in sys.platform:
 
 class pyFS:
 
-    def __init__(self, path, name, initialise_model=False):
+    def __init__(self, path, name, overwrite_model=False,
+                 initialise_model=False):
         if not util.is_path_exists_or_creatable(path):
             raise ValueError('Model path is not valid.')
         self.path = path
@@ -27,10 +28,10 @@ class pyFS:
 
     def _create_empty_model(self):
         self.model_definition = ModelDefinition(self.path, self.name,
+                                                overwrite_model=True,
                                                 initialise_model=True)
         # Add implementation of Load, Analysis, Results etc.
 
     def _read_model(self):
-        self.model_definition = ModelDefinition(self.path, self.name,
-                                                initialise_model=False)
+        self.model_definition = ModelDefinition(self.path, self.name)
         # Add implementation of Load, Analysis, Results etc.
