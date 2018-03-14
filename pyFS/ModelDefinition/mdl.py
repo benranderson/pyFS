@@ -165,7 +165,7 @@ class Material(Component):
                  pressure_coefficient, temperature_table):
         Component.__init__(self, number)
         self.E = E
-        Self.G = G
+        self.G = G
         self.mu = mu
         self.rho = rho
         self.alpha = alpha
@@ -189,7 +189,7 @@ class Material(Component):
 
 class SpringTable(Component):
 
-    def __init__(self, number, K1, K2, K3, K4, K5, K6, type, CO):
+    def __init__(self, number, K1, K2, K3, K4, K5, K6, spring_type, CO):
         Component.__init__(self, number)
         self.K1 = K1
         self.K2 = K2
@@ -197,13 +197,13 @@ class SpringTable(Component):
         self.K4 = K4
         self.K5 = K5
         self.K6 = K6
-        self.type = type
+        self.type = spring_type
         self.CO = CO
 
 
 class RCTable(Component):
 
-    def __init__(number, rc_points):
+    def __init__(self, number, rc_points):
         Component.__init__(self, number)
         self.rc_points = rc_points
 
@@ -226,21 +226,20 @@ class MDLList(list):
     def __init__(self, data=[]):
         list.__init__(self, data)
 
-    def __getslice__(self, i, j):
-        return MDLList(list.__getslice__(self, i, j))
-
     def __add__(self, other):
-        return MDLList(list.__add__(self, other))
+        return list.__add__(self, other)
 
     def __mul__(self, other):
-        return MDLList(list.__mul__(self, other))
+        return list.__mul__(self, other)
 
-    def __getitem__(self, item):
-        result = list.__getitem__(self, item)
-        try:
-            return MDLList(result)
-        except TypeError:
-            return result
+    def __getitem__(self, key):
+        return list.__getitem__(self, key)
+
+    def __setitem__(self, key, value):
+        return list.__setitem__(self, key, value)
+
+    def __delitem__(self, key):
+        return list.__delitem__(self, key)
 
     def add_item(self, new_item):
         index = next((i for i, item in enumerate(self)

@@ -68,8 +68,8 @@ class ModelDefinition:
         if not os.path.exists(self.path):
             os.makedirs(self.path)
 
-        if not overwrite_model and
-            os.path.exists(os.path.join(self.path, self.name + '.mdl')):
+        if (not overwrite_model and
+                os.path.exists(os.path.join(self.path, self.name + '.mdl'))):
             self._read_model_definition()
         else:
             self._initialise_model_definition()
