@@ -1,0 +1,6 @@
+README.md
+setup.cfg
+pyFS.egg-info/PKG-INFO
+pyFS.egg-info/SOURCES.txt
+pyFS.egg-info/dependency_links.txt
+pyFS.egg-info/top_level.txt
