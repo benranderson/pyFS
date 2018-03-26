@@ -1,4 +1,4 @@
-from ModelDefinition import ModelDefinition
+from .ModelDefinition import ModelDefinition
 from . import SystemUtils as util
 
 import datetime
