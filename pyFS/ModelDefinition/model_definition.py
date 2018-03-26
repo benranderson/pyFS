@@ -11,7 +11,7 @@ from .mdl import (Node, BeamElement, SpringCouple, Restraint, MDLList,
                   Point, Geometry, Material, SpringTable, RCTable, ICTable)
 from .model_parser import ModelParser
 from ..BatchController.batch_controller import BatchController
-from ..BatchController.commands import *
+#from ..BatchController.commands import *
 from .. import SystemUtils as util
 
 import datetime
@@ -86,12 +86,18 @@ class ModelDefinition:
         return Point(x, y, z)
 
     def select_nodes_by_points(self, point_1, point_2):
-        return [node in self.nodes if (node.x > min(point_1.x, point_2.x) and
-                                       node.x < max(point_1.x, point_2.x) and
-                                       node.y > min(point_1.y, point_2.y) and
-                                       node.y < max(point_1.y, point_2.y) and
-                                       node.z > min(point_1.z, point_2.z) and
-                                       node.z < max(point_1.z, point_2.z))]
+
+        def is_in_range(node):
+            return ((node.x > min(point_1.x, point_2.x)) and
+                    (node.x < max(point_1.x, point_2.x)) and
+                    (node.y > min(point_1.y, point_2.y)) and
+                    (node.y < max(point_1.y, point_2.y)) and
+                    (node.z > min(point_1.z, point_2.z)) and
+                    (node.z < max(point_1.z, point_2.z)))
+
+        nodes = [node for node in self.nodes if is_in_range(node)]
+
+        return nodes
 
     def create_beam_element(self, number=0, N1=0, N2=0, N3=0, rotation=0,
                             geometry=0, material=0, relZ=0,
@@ -129,12 +135,13 @@ class ModelDefinition:
     def create_geometry(self, number=0, type=0, name='', designation='',
                         graphics_type=0, graphics_offset_y=0,
                         graphics_offset_z=0, pipe_OD=0, pipe_WT=0, area=0,
-                        I_zz=0, I_yy=0, J=0, A_y=0, A_z=0, P_yy=0, G=0,
-                        S_1_y=0, S_1_z=0, S_2_y=0, S_2_z=0, S_3_y=0, S_3_z=0,
-                        S_4_y=0, S_4_z=0, G_2=0, corrosion_allowance=0,
-                        mill_tolerance=0, contents_density=0,
-                        insultation_thickness=0, insulation_density=0,
-                        lining_thickness=0, lining_density=0):
+                        I_zz=0, I_yy=0, J=0, A_y=0, A_z=0, P_yy=0, P_zz=0,
+                        G=0, S_1_y=0, S_1_z=0, S_2_y=0, S_2_z=0, S_3_y=0,
+                        S_3_z=0, S_4_y=0, S_4_z=0, G_2=0,
+                        corrosion_allowance=0, mill_tolerance=0,
+                        contents_density=0, insultation_thickness=0,
+                        insulation_density=0, lining_thickness=0,
+                        lining_density=0):
         if pipe_OD == pipe_WT == area == I_yy == I_zz == 0:
             raise ValueError("Must provide pipe sizes or section definition")
         if number == 0:
