@@ -19,6 +19,11 @@ class Node(Component):
         self.z = z_coord
         self.CSYS = CSYS
 
+    def translate(self, delta_x, delta_y, delta_z):
+        self.x += delta_x
+        self.y += delta_y
+        self.z += delta_z
+
     def MDLFormat(self):
         return ('N,' + str(self.number) + ',' + str(self.x) + ',' +
                 str(self.y) + ',' + str(self.z) + ',' + str(self.CSYS) + '\n')
