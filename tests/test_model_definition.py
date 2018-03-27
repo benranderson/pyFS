@@ -1,4 +1,4 @@
-from .model_definition import ModelDefinition
+from pyFS.ModelDefinition.model_definition import ModelDefinition
 import pytest
 import os
 
@@ -10,13 +10,13 @@ def new_uninitialised_ModelDefinition(tmpdir):
 
 
 def test_new_uninitialised_ModelDefinition_path(
-                                    new_uninitialised_ModelDefinition, tmpdir):
+        new_uninitialised_ModelDefinition, tmpdir):
     assert new_uninitialised_ModelDefinition.path == str(tmpdir.join(
-                                                                  'new_unini'))
+        'new_unini'))
 
 
 def test_new_uninitialised_ModelDefinition_name(
-                                            new_uninitialised_ModelDefinition):
+        new_uninitialised_ModelDefinition):
     assert new_uninitialised_ModelDefinition.name == 'new_unini'
 
 

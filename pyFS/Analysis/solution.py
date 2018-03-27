@@ -1,3 +1,6 @@
+import os
+
+
 class DynoflexOptionFile():
 
     def __init__(self, number):
@@ -20,5 +23,6 @@ class Pile3DOptionFile():
 
     def write(self, path, name):
         with open(os.path.join(path, name, '.upi'), 'w') as o:
-            o.write(f'{int(self.p_delta)}\n{int(self.plasticity)}\n{self.tol} / n{self.max_iter}\n{self.load_steps}\n{self.soln_opt}\n /
-                      {self.conv_criteria}\n{self.soft_springs}')
+            o.write(f'{int(self.p_delta)}\n{int(self.plasticity)}\n{self.tol}' +
+                    f'\n{self.max_iter}\n{self.load_steps}\n{self.soln_opt}\n' +
+                    f'{self.conv_criteria}\n{self.soft_springs}')
