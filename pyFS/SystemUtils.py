@@ -35,6 +35,7 @@ def update_model_nam(model_name, model_path):
 def generate_nam_data(model_name, model_path):
     return '{0}\{1}\n{1}\n{0}'.format(model_path, model_name)
 
+
 ERROR_INVALID_NAME = 123
 ERROR_FILENAME_EXCED_RANGE = 204
 '''

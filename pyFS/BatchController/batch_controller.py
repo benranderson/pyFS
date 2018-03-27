@@ -1,6 +1,6 @@
 import os
 import subprocess
-from .. import SystemUtils as util
+from pyFS import SystemUtils as util
 
 
 class BatchController:

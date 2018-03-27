@@ -1,5 +1,6 @@
-from .mdl import (MDLList, Node, BeamElement, SpringCouple, Restraint,
-                  Geometry, Material, SpringTable, RCTable, ICTable)
+from pyFS.ModelDefinition.mdl import (MDLList, Node, BeamElement,
+                                      SpringCouple, Restraint, Geometry,
+                                      Material, SpringTable, RCTable, ICTable)
 import os
 
 
@@ -36,19 +37,19 @@ class ModelParser:
 
                 elif split_line[0].lower() == 'e':
                     self.beam_elements.add_item(BeamElement(
-                                                    int(split_line[1]),
-                                                    int(split_line[2]),
-                                                    int(split_line[3]),
-                                                    int(split_line[4]),
-                                                    int(split_line[5]),
-                                                    int(split_line[6]),
-                                                    int(split_line[7]),
-                                                    int(split_line[8]),
-                                                    int(split_line[9]),
-                                                    int(split_line[10]),
-                                                    int(split_line[11]),
-                                                    int(split_line[12]),
-                                                    int(split_line[13])))
+                        int(split_line[1]),
+                        int(split_line[2]),
+                        int(split_line[3]),
+                        int(split_line[4]),
+                        int(split_line[5]),
+                        int(split_line[6]),
+                        int(split_line[7]),
+                        int(split_line[8]),
+                        int(split_line[9]),
+                        int(split_line[10]),
+                        int(split_line[11]),
+                        int(split_line[12]),
+                        int(split_line[13])))
 
                 elif split_line[0].lower() == 'sc':
                     self.couples.add_item(SpringCouple(int(split_line[1]),
@@ -61,13 +62,13 @@ class ModelParser:
 
                 elif split_line[0].lower() == 'rest':
                     self.restraints.add_item(Restraint(
-                                                int(split_line[1]),
-                                                bool(int(split_line[2])),
-                                                bool(int(split_line[3])),
-                                                bool(int(split_line[4])),
-                                                bool(int(split_line[5])),
-                                                bool(int(split_line[6])),
-                                                bool(int(split_line[7]))))
+                        int(split_line[1]),
+                        bool(int(split_line[2])),
+                        bool(int(split_line[3])),
+                        bool(int(split_line[4])),
+                        bool(int(split_line[5])),
+                        bool(int(split_line[6])),
+                        bool(int(split_line[7]))))
 
                 elif (split_line[0].lower()[:-1] == 'gtab'):
                     self.read_GTAB(split_line)
@@ -130,7 +131,7 @@ class ModelParser:
                        ['lining_thickness', float], ['lining_density', float]]]
         number = int(split_line[1])
         index = next((i for i, item in enumerate(self.geometries)
-                     if item.number == number), None)
+                      if item.number == number), None)
         if index is not None:
             g = self.geometries[index]
         else:
@@ -143,7 +144,7 @@ class ModelParser:
                 setattr(g, attribute, method(split_line[index + 2]))
         else:
             for index, [attribute, method] in enumerate(
-                    attributes[int(split_line[0][-1])-1]):
+                    attributes[int(split_line[0][-1]) - 1]):
                 setattr(g, attribute, method(split_line[index + 2]))
         self.geometries.add_item(g)
 

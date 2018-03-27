@@ -1,4 +1,4 @@
-from .solution import Pile3DOptionFile
+from pyFS.Analysis.solution import Pile3DOptionFile
 import os
 
 
