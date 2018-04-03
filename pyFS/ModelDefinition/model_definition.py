@@ -166,11 +166,11 @@ class ModelDefinition:
 
         if number == 0:
             number = len(self.materials) + 1
-        self.geometries.add_item(Material(number, E, G, mu, rho, alpha,
-                                          yield_strength, name, UTS,
-                                          pipework_UTS, cold_allowable_stress,
-                                          quality_factor, pressure_coefficient,
-                                          temperature_table))
+        self.materials.add_item(Material(number, E, G, mu, rho, alpha,
+                                         yield_strength, name, UTS,
+                                         pipework_UTS, cold_allowable_stress,
+                                         quality_factor, pressure_coefficient,
+                                         temperature_table))
 
     def create_couple_property(self, number=0, K1=0, K2=0, K3=0, K4=0, K5=0,
                                K6=0, type=0, CO=0):
@@ -241,6 +241,7 @@ class ModelDefinition:
             MDL.writelines(sc.MDLFormat() for sc in self.couples)
             MDL.writelines(r.MDLFormat() for r in self.restraints)
             MDL.writelines(g.MDLFormat() for g in self.geometries)
+            MDL.writelines(m.MDLFormat() for m in self.materials)
 
     def __repr__(self):
         return 'Model: {0}'.format(self.name)

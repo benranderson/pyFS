@@ -184,7 +184,16 @@ class Material(Component):
         self.temperature_table = temperature_table
 
     def MDLFormat(self):
-        pass
+        return ('MTAB,' + str(self.number) + ',' + str(self.E) + ','
+                + str(self.G) + ',' + str(self.mu) + ',' + str(self.rho) + ','
+                + str(self.alpha) + ',' + str(self.yield_strength) + ','
+                + str(self.name) + ',' + str(self.UTS) + '\n'
+                + 'MTABP,' + str(self.number) + ',' + str(self.pipework_UTS)
+                + ',' + str(self.cold_allowable_stress) + ','
+                + str(self.quality_factor) + ','
+                + str(self.pressure_coefficient) + '\n'
+                + 'MTABT,' + str(self.number) + ','
+                + str(self.temperature_table)[1:-1] + '\n')
 
     def add_temperature_point(self, temperature, alpha, E, allowable_stress):
 
