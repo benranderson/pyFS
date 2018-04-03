@@ -211,14 +211,14 @@ class SpringTable(Component):
         self.K4 = K4
         self.K5 = K5
         self.K6 = K6
-        self.type = spring_type
+        self.spring_type = spring_type
         self.CO = CO
 
     def MDLformat(self):
         return ('STAB,' + str(self.number) + ',' + str(self.K1) + ','
                 + str(self.K2) + ',' + str(self.K3) + ',' + str(self.K4) + ','
-                + str(self.K5) + ',' + str(self.K6) + ',' + str(self.type)
-                + ',' + str(self.CO) + '\n')
+                + str(self.K5) + ',' + str(self.K6) + ','
+                + str(self.spring_type) + ',' + str(self.CO) + '\n')
 
 
 class RCTable(Component):

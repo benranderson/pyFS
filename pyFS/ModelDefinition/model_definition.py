@@ -174,11 +174,11 @@ class ModelDefinition:
                                          temperature_table))
 
     def create_couple_property(self, number=0, K1=0, K2=0, K3=0, K4=0, K5=0,
-                               K6=0, type=0, CO=0):
+                               K6=0, spring_type=0, CO=0):
         if number == 0:
             number = len(self.couple_properties) + 1
         self.couple_properties.add_item(SpringTable(number, K1, K2, K3, K4, K5,
-                                                    K6, type, CO))
+                                                    K6, spring_type, CO))
 
     def create_RC_table(self, number, rc_points=[]):
         if number == 0:
