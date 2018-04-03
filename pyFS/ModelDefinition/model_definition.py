@@ -140,7 +140,7 @@ class ModelDefinition:
                         G=0, S_1_y=0, S_1_z=0, S_2_y=0, S_2_z=0, S_3_y=0,
                         S_3_z=0, S_4_y=0, S_4_z=0, G_2=0,
                         corrosion_allowance=0, mill_tolerance=0,
-                        contents_density=0, insultation_thickness=0,
+                        contents_density=0, insulation_thickness=0,
                         insulation_density=0, lining_thickness=0,
                         lining_density=0):
         if pipe_OD == pipe_WT == area == I_yy == I_zz == 0:
@@ -155,7 +155,7 @@ class ModelDefinition:
                                           S_3_y, S_3_z, S_4_y, S_4_z, G_2,
                                           corrosion_allowance, mill_tolerance,
                                           contents_density,
-                                          insultation_thickness,
+                                          insulation_thickness,
                                           insulation_density, lining_thickness,
                                           lining_density))
 
