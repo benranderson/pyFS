@@ -7,7 +7,7 @@ Designing the object heirarchy this way allows multiple LoadDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
-from pyFS.LoadDefinition.l import (NL, ND, EP, LList)
+from pyFS.LoadDefinition.l import (NL, ND, EP, UDL, LList)
 import datetime
 import os
 
@@ -72,6 +72,15 @@ class LoadDefinition:
                                              x_force, y_force, z_force,
                                              x_moment, y_moment, z_moment))
 
+    def create_element_uniformly_distributed_load(self, number=0, element=0,
+                                                  x_force=0, y_force=0,
+                                                  z_force=0):
+        if number == 0:
+            number = len(self.nodal_displacements) + 1
+        self.element_uniformly_distributed_loads.add_item(UDL(number, element,
+                                                              x_force, y_force,
+                                                              z_force))
+
     def _initialise_load_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
@@ -84,6 +93,7 @@ class LoadDefinition:
         self.nodal_loads = LList()
         self.nodal_displacements = LList()
         self.element_point_loads = LList()
+        self.element_uniformly_distributed_loads = LList()
 
     def write_L_file(self):
         path = os.path.join(self.path, self.name + self.extension)
@@ -91,3 +101,5 @@ class LoadDefinition:
             L.writelines(nl.LFormat() for nl in self.nodal_loads)
             L.writelines(nd.LFormat() for nd in self.nodal_displacements)
             L.writelines(ep.LFormat() for ep in self.element_point_loads)
+            L.writelines(udl.LFormat() for udl
+                         in self.element_uniformly_distributed_loads)
