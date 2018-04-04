@@ -86,6 +86,30 @@ class UDL(Load):
                 + str(self.UDY) + ',' + str(self.UDZ) + '\n')
 
 
+class ED(Load):
+
+    def __init__(self, number, element, coord, s_length, f_length, s_x_force,
+                 f_x_force, s_y_force, f_y_force, s_z_force, f_z_force):
+        Load.__init__(self, number)
+        self.element = element
+        self.coord = coord
+        self.SLength = s_length
+        self.FLength = f_length
+        self.GDX1 = s_x_force
+        self.GDX2 = f_x_force
+        self.GDY1 = s_y_force
+        self.GDY2 = f_y_force
+        self.GDZ1 = s_z_force
+        self.GDZ2 = f_z_force
+
+    def LFormat(self):
+        return ('ED,' + str(self.element) + ',' + str(self.coord) + ','
+                + str(self.SLength) + ',' + str(self.FLength) + ','
+                + str(self.GDX1) + ',' + str(self.GDX2) + ',' + str(self.GDY1)
+                + ',' + str(self.GDY2) + ',' + str(self.GDZ1) + ','
+                + str(self.GDZ2) + '\n')
+
+
 class LList(list):
 
     def __init__(self, data=[]):
