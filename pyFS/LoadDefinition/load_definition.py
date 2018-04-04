@@ -7,7 +7,7 @@ Designing the object heirarchy this way allows multiple LoadDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
-from pyFS.LoadDefinition.l import (NL, ND, LList)
+from pyFS.LoadDefinition.l import (NL, ND, EP, LList)
 import datetime
 import os
 
@@ -63,6 +63,15 @@ class LoadDefinition:
         self.nodal_displacements.add_item(ND(number, node, x_disp, y_disp,
                                              z_disp, x_rot, y_rot, z_rot))
 
+    def create_element_point_load(self, number=0, element=0, coord=1, length=0,
+                                  x_force=0, y_force=0, z_force=0, x_moment=0,
+                                  y_moment=0, z_moment=0):
+        if number == 0:
+            number = len(self.nodal_displacements) + 1
+        self.element_point_loads.add_item(EP(number, element, coord, length,
+                                             x_force, y_force, z_force,
+                                             x_moment, y_moment, z_moment))
+
     def _initialise_load_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
@@ -74,9 +83,11 @@ class LoadDefinition:
     def _create_empty_lists(self):
         self.nodal_loads = LList()
         self.nodal_displacements = LList()
+        self.element_point_loads = LList()
 
     def write_L_file(self):
         path = os.path.join(self.path, self.name + self.extension)
         with open(path, 'w+') as L:
             L.writelines(nl.LFormat() for nl in self.nodal_loads)
             L.writelines(nd.LFormat() for nd in self.nodal_displacements)
+            L.writelines(ep.LFormat() for ep in self.element_point_loads)

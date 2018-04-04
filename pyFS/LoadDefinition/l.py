@@ -50,6 +50,28 @@ class ND(Load):
                 + str(self.Ry) + ',' + str(self.Rz) + '\n')
 
 
+class EP(Load):
+
+    def __init__(self, number, element, coord, length, x_force, y_force,
+                 z_force, x_moment, y_moment, z_moment):
+        Load.__init__(self, number)
+        self.element = element
+        self.coord = coord
+        self.length = length
+        self.Fx = x_force
+        self.Fy = y_force
+        self.Fz = z_force
+        self.Mx = x_moment
+        self.My = y_moment
+        self.Mz = z_moment
+
+    def LFormat(self):
+        return ('EP,' + str(self.element) + ',' + str(self.coord) + ','
+                + str(self.length) + ',' + str(self.Fx) + ',' + str(self.Fy)
+                + ',' + str(self.Fz) + ',' + str(self.Mx) + ',' + str(self.My)
+                + ',' + str(self.Mz) + '\n')
+
+
 class LList(list):
 
     def __init__(self, data=[]):
