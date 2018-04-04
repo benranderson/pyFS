@@ -214,7 +214,7 @@ class SpringTable(Component):
         self.spring_type = spring_type
         self.CO = CO
 
-    def MDLformat(self):
+    def MDLFormat(self):
         return ('STAB,' + str(self.number) + ',' + str(self.K1) + ','
                 + str(self.K2) + ',' + str(self.K3) + ',' + str(self.K4) + ','
                 + str(self.K5) + ',' + str(self.K6) + ','
