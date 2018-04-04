@@ -31,6 +31,25 @@ class NL(Load):
                 + '\n')
 
 
+class ND(Load):
+
+    def __init__(self, number, node, x_disp, y_disp, z_disp, x_rot, y_rot,
+                 z_rot):
+        Load.__init__(self, number)
+        self.node = node
+        self.Tx = x_disp
+        self.Ty = y_disp
+        self.Tz = z_disp
+        self.Rx = x_rot
+        self.Ry = y_rot
+        self.Rz = z_rot
+
+    def LFormat(self):
+        return ('ND,' + str(self.node) + ',' + str(self.Tx) + ','
+                + str(self.Ty) + ',' + str(self.Tz) + ',' + str(self.Rx) + ','
+                + str(self.Ry) + ',' + str(self.Rz) + '\n')
+
+
 class LList(list):
 
     def __init__(self, data=[]):
