@@ -110,6 +110,51 @@ class ED(Load):
                 + str(self.GDZ2) + '\n')
 
 
+class FP(Load):
+
+    def __init__(self, number, element, face, direction, p1, p2, p3, p4):
+        Load.__init__(self, number)
+        self.element = element
+        self.face = face
+        self.dir = direction
+        self.P1 = p1
+        self.P2 = p2
+        self.P3 = p3
+        self.P4 = p4
+
+    def LFormat(self):
+        return ('FP,' + str(self.element) + ',' + str(self.face) + ','
+                + str(self.dir) + ',' + str(self.P1) + ',' + str(self.P2) + ','
+                + str(self.P3) + ',' + str(self.P4) + '\n')
+
+
+class TEPR(Load):
+
+    def __init__(self, number, element, temperature, press_pi, temp_ls,
+                 press_po):
+        Load.__init__(self, number)
+        self.element = element
+        self.TEMP1 = temperature
+        self.PRESS1 = press_pi
+        self.TEMP2 = temp_ls
+        self.PRESS2 = press_po
+
+    def LFormat(self):
+        return ('TEPR,' + str(self.element) + ',' + str(self.TEMP1) + ','
+                + str(self.PRESS1) + ',' + str(self.TEMP2) + ','
+                + str(self.PRESS2) + '\n')
+
+
+class AMBT(Load):
+
+    def __init__(self, number, temperature):
+        Load.__init__(self, number)
+        self.ambient_temperature = temperature
+
+    def LFormat(self):
+        return ('AMBT,' + str(self.ambient_temperature) + '\n')
+
+
 class LList(list):
 
     def __init__(self, data=[]):

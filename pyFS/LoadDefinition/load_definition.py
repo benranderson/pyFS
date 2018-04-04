@@ -7,7 +7,7 @@ Designing the object heirarchy this way allows multiple LoadDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
-from pyFS.LoadDefinition.l import (NL, ND, EP, UDL, ED, LList)
+from pyFS.LoadDefinition.l import (NL, ND, EP, UDL, ED, FP, TEPR, AMBT, LList)
 import datetime
 import os
 
@@ -100,6 +100,30 @@ class LoadDefinition:
                                                    s_y_force, f_y_force,
                                                    s_z_force, f_z_force))
 
+    def create_face_and_edge_load(self, number=0, element=0, face=0,
+                                  direction=1, p1=0, p2=0, p3=0, p4=0):
+        if number == 0:
+            number = len(self.face_and_edge_loads) + 1
+        self.face_and_edge_loads.add_item(FP(number, element, face, direction,
+                                             p1, p2, p3, p4))
+
+    def create_thermal_and_pressure_load(self, number=0, element=0,
+                                         temperature=0, press_pi=0,
+                                         temp_ls=None, press_po=0):
+        if number == 0:
+            number = len(self.thermal_and_pressure_loads) + 1
+        if temp_ls is None:
+            temp_ls = temperature
+        self.thermal_and_pressure_loads.add_item(TEPR(number, element,
+                                                      temperature, press_pi,
+                                                      temp_ls, press_po))
+        self.create_ambient_temperature_load()
+
+    def create_ambient_temperature_load(self, number=0, temperature=0):
+        if number == 0:
+            number = len(self.ambient_temperature_loads) + 1
+        self.ambient_temperature_loads.add_item(AMBT(number, temperature))
+
     def _initialise_load_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
@@ -114,6 +138,9 @@ class LoadDefinition:
         self.element_point_loads = LList()
         self.element_uniformly_distributed_loads = LList()
         self.element_distributed_loads = LList()
+        self.face_and_edge_loads = LList()
+        self.thermal_and_pressure_loads = LList()
+        self.ambient_temperature_loads = LList()
 
     def write_L_file(self):
         path = os.path.join(self.path, self.name + self.extension)
@@ -124,3 +151,8 @@ class LoadDefinition:
             L.writelines(udl.LFormat() for udl
                          in self.element_uniformly_distributed_loads)
             L.writelines(ed.LFormat() for ed in self.element_distributed_loads)
+            L.writelines(fp.LFormat() for fp in self.face_and_edge_loads)
+            L.writelines(tepr.LFormat() for tepr
+                         in self.thermal_and_pressure_loads)
+            L.writelines(ambt.LFormat() for ambt
+                         in self.ambient_temperature_loads)
