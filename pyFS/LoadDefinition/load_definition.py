@@ -7,7 +7,7 @@ Designing the object heirarchy this way allows multiple LoadDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
-
+from pyFS.LoadDefinition.l import (NL, LList)
 import datetime
 import os
 
@@ -48,6 +48,14 @@ class LoadDefinition:
         else:
             self._initialise_load_definition()
 
+    def create_nodal_load(self, number=0, node=0, x_force=0, y_force=0,
+                          z_force=0, x_moment=0, y_moment=0, z_moment=0,
+                          conc_mass=0):
+        if number == 0:
+            number = len(self.nodal_loads) + 1
+        self.nodal_loads.add_item(NL(number, node, x_force, y_force, z_force,
+                                     x_moment, y_moment, z_moment, conc_mass))
+
     def _initialise_load_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
@@ -57,9 +65,9 @@ class LoadDefinition:
         pass
 
     def _create_empty_lists(self):
-        pass
+        self.nodal_loads = LList()
 
     def write_L_file(self):
         path = os.path.join(self.path, self.name + self.extension)
         with open(path, 'w+') as L:
-            L.writelines('Test')
+            L.writelines(nl.LFormat() for nl in self.nodal_loads)
