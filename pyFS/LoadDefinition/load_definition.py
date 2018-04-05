@@ -8,7 +8,7 @@ defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
 from pyFS.LoadDefinition.l import (NL, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
-                                   PTEMP, AMBT, LList)
+                                   PTEMP, Grv, AMBT, LList)
 import datetime
 import os
 
@@ -173,6 +173,12 @@ class LoadDefinition:
             self.geometric_property_code_temps.add_item(
                 PTEMP(number, geometric_code, differential_temperature))
 
+    def create_gravitational_constants(self, x_acceleration=0,
+                                       y_acceleration=0, z_acceleration=0):
+        self.gravitational_constants.add_item(Grv(1, x_acceleration,
+                                                  y_acceleration,
+                                                  z_acceleration))
+
     def create_ambient_temperature_load(self, number=0, temperature=0):
         if number == 0:
             number = len(self.ambient_temperature_loads) + 1
@@ -197,6 +203,7 @@ class LoadDefinition:
         self.geometric_property_code_UDLs = LList()
         self.geometric_property_code_press = LList()
         self.geometric_property_code_temps = LList()
+        self.gravitational_constants = LList()
         self.ambient_temperature_loads = LList()
 
     def write_L_file(self):
@@ -217,5 +224,6 @@ class LoadDefinition:
                          in self.geometric_property_code_press)
             L.writelines(ptemp.LFormat() for ptemp
                          in self.geometric_property_code_temps)
+            L.writelines(grv.LFormat() for grv in self.gravitational_constants)
             L.writelines(ambt.LFormat() for ambt
                          in self.ambient_temperature_loads)

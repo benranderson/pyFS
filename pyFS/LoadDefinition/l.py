@@ -180,6 +180,19 @@ class PTEMP(Load):
         return ('PTEMP,' + str(self.code) + ',' + str(self.temp) + '\n')
 
 
+class Grv(Load):
+
+    def __init__(self, number, x_acceleration, y_acceleration, z_acceleration):
+        Load.__init__(self, number)
+        self.Gx = x_acceleration
+        self.Gy = y_acceleration
+        self.Gz = z_acceleration
+
+    def LFormat(self):
+        return ('ACCEL,' + str(self.Gx) + ',' + str(self.Gy) + ','
+                + str(self.Gz) + '\n')
+
+
 class AMBT(Load):
 
     def __init__(self, number, temperature):
