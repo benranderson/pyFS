@@ -145,6 +145,41 @@ class TEPR(Load):
                 + str(self.PRESS2) + '\n')
 
 
+class PUDL(Load):
+
+    def __init__(self, number, geometric_code, load_direction, load_magnitude):
+        Load.__init__(self, number)
+        self.code = geometric_code
+        self.dir = load_direction
+        self.load = load_magnitude
+
+    def LFormat(self):
+        return ('PUDL,' + str(self.code) + ',' + str(self.dir) + ','
+                + str(self.load) + '\n')
+
+
+class PPRESS(Load):
+
+    def __init__(self, number, geometric_code, internal_pressure):
+        Load.__init__(self, number)
+        self.code = geometric_code
+        self.press = internal_pressure
+
+    def LFormat(self):
+        return ('PPRESS,' + str(self.code) + ',' + str(self.press) + '\n')
+
+
+class PTEMP(Load):
+
+    def __init__(self, number, geometric_code, differential_temperature):
+        Load.__init__(self, number)
+        self.code = geometric_code
+        self.temp = differential_temperature
+
+    def LFormat(self):
+        return ('PTEMP,' + str(self.code) + ',' + str(self.temp) + '\n')
+
+
 class AMBT(Load):
 
     def __init__(self, number, temperature):

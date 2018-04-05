@@ -7,7 +7,8 @@ Designing the object heirarchy this way allows multiple LoadDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
-from pyFS.LoadDefinition.l import (NL, ND, EP, UDL, ED, FP, TEPR, AMBT, LList)
+from pyFS.LoadDefinition.l import (NL, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
+                                   PTEMP, AMBT, LList)
 import datetime
 import os
 
@@ -119,6 +120,59 @@ class LoadDefinition:
                                                       temp_ls, press_po))
         self.create_ambient_temperature_load()
 
+    def create_geometric_property_code_load(self, number=0, geometric_code=1,
+                                            x_udl=None, y_udl=None, z_udl=None,
+                                            internal_pressure=None,
+                                            differential_temperature=None):
+        self.create_geometric_property_code_UDL(number, geometric_code,
+                                                x_udl, y_udl, z_udl)
+        self.create_geometric_property_code_press(number, geometric_code,
+                                                  internal_pressure)
+        self.create_geometric_property_code_temp(number, geometric_code,
+                                                 differential_temperature)
+
+    def create_geometric_property_code_UDL(self, number=0, geometric_code=1,
+                                           x_udl=None, y_udl=None, z_udl=None):
+        if x_udl is not None:
+            if number == 0:
+                number = len(self.geometric_property_code_UDLs) + 1
+            self.geometric_property_code_UDLs.add_item(PUDL(number,
+                                                            geometric_code, 1,
+                                                            x_udl))
+        if y_udl is not None:
+            if number == 0 or x_udl is not None:
+                number = len(self.geometric_property_code_UDLs) + 1
+            self.geometric_property_code_UDLs.add_item(PUDL(number,
+                                                            geometric_code, 2,
+                                                            y_udl))
+        if z_udl is not None:
+            if number == 0 or x_udl is not None or y_udl is not None:
+                number = len(self.geometric_property_code_UDLs) + 1
+            self.geometric_property_code_UDLs.add_item(PUDL(number,
+                                                            geometric_code, 3,
+                                                            z_udl))
+        pass
+
+    def create_geometric_property_code_press(self, number=0, geometric_code=1,
+                                             internal_pressure=None):
+        if internal_pressure is None:
+            pass
+        else:
+            if number == 0:
+                number = len(self.geometric_property_code_press) + 1
+            self.geometric_property_code_press.add_item(
+                PPRESS(number, geometric_code, internal_pressure))
+
+    def create_geometric_property_code_temp(self, number=0, geometric_code=1,
+                                            differential_temperature=None):
+        if differential_temperature is None:
+            pass
+        else:
+            if number == 0:
+                number = len(self.geometric_property_code_temps) + 1
+            self.geometric_property_code_temps.add_item(
+                PTEMP(number, geometric_code, differential_temperature))
+
     def create_ambient_temperature_load(self, number=0, temperature=0):
         if number == 0:
             number = len(self.ambient_temperature_loads) + 1
@@ -140,6 +194,9 @@ class LoadDefinition:
         self.element_distributed_loads = LList()
         self.face_and_edge_loads = LList()
         self.thermal_and_pressure_loads = LList()
+        self.geometric_property_code_UDLs = LList()
+        self.geometric_property_code_press = LList()
+        self.geometric_property_code_temps = LList()
         self.ambient_temperature_loads = LList()
 
     def write_L_file(self):
@@ -154,5 +211,11 @@ class LoadDefinition:
             L.writelines(fp.LFormat() for fp in self.face_and_edge_loads)
             L.writelines(tepr.LFormat() for tepr
                          in self.thermal_and_pressure_loads)
+            L.writelines(pudl.LFormat() for pudl
+                         in self.geometric_property_code_UDLs)
+            L.writelines(ppress.LFormat() for ppress
+                         in self.geometric_property_code_press)
+            L.writelines(ptemp.LFormat() for ptemp
+                         in self.geometric_property_code_temps)
             L.writelines(ambt.LFormat() for ambt
                          in self.ambient_temperature_loads)
