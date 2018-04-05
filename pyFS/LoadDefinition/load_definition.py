@@ -13,11 +13,10 @@ import datetime
 import os
 
 
-class LoadDefinition:
+class LoadCase:
     """
-    Represents all the functionality found in the Load Definition Task and
-    ultimately provides functionality to define loads in FS2000 or to write
-    .L files for use in an analysis.
+    Represents all the functionality required to write a load case file and to
+    write .L files for use in an analysis.
     """
 
     def __init__(self, path, name, extension='.L', overwrite_load=False):
