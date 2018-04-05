@@ -137,30 +137,52 @@ class Geometry(Component):
         self.lining_density = lining_density
 
     def MDLFormat(self):
-        return ('GTAB1,' + str(self.number) + ',' + str(self.type) + ',' +
-                self.name + ',' + str(self.designation) + ',' +
-                str(self.graphics_type) + ',' + str(self.graphics_offset_y) +
-                ',' + str(self.graphics_offset_z) + '\n' +
-                'GTAB2,' + str(self.number) + ',' + str(self.pipe_OD) + ',' +
-                str(self.pipe_WT) + ',' + str(self.area) + ',' +
-                str(self.I_yy) + ',' + str(self.I_zz) + ',' + str(self.J) +
-                '\n' +
-                'GTAB3,' + str(self.number) + ',' + str(self.A_y) + ',' +
-                str(self.A_z) + ',' + str(self.P_yy) + ',' + str(self.P_zz) +
-                ',' + str(self.G) + '\n' +
-                'GTAB4,' + str(self.number) + ',' + str(self.S_1_y) + ',' +
-                str(self.S_1_z) + ',' + str(self.S_2_y) + ',' +
-                str(self.S_2_z) + '\n' +
-                'GTAB5,' + str(self.number) + ',' + str(self.S_3_y) + ',' +
-                str(self.S_3_z) + ',' + str(self.S_4_y) + ',' +
-                str(self.S_4_z) + ',' + str(self.G_2) + '\n' +
-                'GTABP,' + str(self.number) + ',' +
-                str(self.corrosion_allowance) + ',' +
-                str(self.mill_tolerance) + ',' + str(self.contents_density) +
-                ',' + str(self.insulation_thickness) + ',' +
-                str(self.insulation_density) + ',' +
-                str(self.lining_thickness) + ',' + str(self.lining_density) +
-                '\n')
+        if self.A_y == self.A_z == self.P_yy == self.P_zz == self.G == self.S_1_y == self.S_1_z == self.S_2_y == self.S_2_z == self.S_3_y == self.S_3_z == self.S_4_y == self.S_4_z == self.G_2 is None:
+            return ('GTAB1,' + str(self.number) + ',' + str(self.type) + ','
+                    + self.name + ',' + str(self.designation) + ','
+                    + str(self.graphics_type) + ','
+                    + str(self.graphics_offset_y) + ','
+                    + str(self.graphics_offset_z) + '\n'
+                    + 'GTAB2,' + str(self.number) + ',' + str(self.pipe_OD)
+                    + ',' + str(self.pipe_WT) + ',' + str(self.area) + ','
+                    + str(self.I_yy) + ',' +
+                    str(self.I_zz) + ',' + str(self.J)
+                    + '\n'
+                    + 'GTABP,' + str(self.number) + ','
+                    + str(self.corrosion_allowance) + ','
+                    + str(self.mill_tolerance) + ','
+                    + str(self.contents_density) + ','
+                    + str(self.insulation_thickness) + ','
+                    + str(self.insulation_density) + ','
+                    + str(self.lining_thickness) + ','
+                    + str(self.lining_density) + '\n')
+        else:
+            return ('GTAB1,' + str(self.number) + ',' + str(self.type) + ','
+                    + self.name + ',' + str(self.designation) + ','
+                    + str(self.graphics_type) + ','
+                    + str(self.graphics_offset_y) + ','
+                    + str(self.graphics_offset_z) + '\n'
+                    + 'GTAB2,' + str(self.number) + ',' + str(self.pipe_OD)
+                    + ',' + str(self.pipe_WT) + ',' + str(self.area) + ','
+                    + str(self.I_yy) + ',' + str(self.I_zz) + ',' + str(self.J)
+                    + '\n' +
+                    'GTAB3,' + str(self.number) + ',' + str(self.A_y) + ','
+                    + str(self.A_z) + ',' + str(self.P_yy) + ','
+                    + str(self.P_zz) + ',' + str(self.G) + '\n'
+                    + 'GTAB4,' + str(self.number) + ',' + str(self.S_1_y) + ','
+                    + str(self.S_1_z) + ',' + str(self.S_2_y) + ','
+                    + str(self.S_2_z) + '\n'
+                    + 'GTAB5,' + str(self.number) + ',' + str(self.S_3_y) + ','
+                    + str(self.S_3_z) + ',' + str(self.S_4_y) + ','
+                    + str(self.S_4_z) + ',' + str(self.G_2) + '\n'
+                    + 'GTABP,' + str(self.number) + ','
+                    + str(self.corrosion_allowance) + ','
+                    + str(self.mill_tolerance) + ','
+                    + str(self.contents_density) + ','
+                    + str(self.insulation_thickness) + ','
+                    + str(self.insulation_density) + ','
+                    + str(self.lining_thickness) + ','
+                    + str(self.lining_density) + '\n')
 
 
 class Material(Component):

@@ -208,6 +208,7 @@ class LoadCase:
     def write_L_file(self):
         path = os.path.join(self.path, self.name + self.extension)
         with open(path, 'w+') as L:
+            L.write('REFORMAT\n')
             L.writelines(nl.LFormat() for nl in self.nodal_loads)
             L.writelines(nd.LFormat() for nd in self.nodal_displacements)
             L.writelines(ep.LFormat() for ep in self.element_point_loads)
