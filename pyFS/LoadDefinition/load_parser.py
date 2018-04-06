@@ -86,3 +86,14 @@ class LoadParser:
                         float(split_line[8]),
                         float(split_line[9]),
                         float(split_line[10])))
+
+                elif split_line[0].lower() == 'fp':
+                    self.face_and_edge_loads.add_item(FP(
+                        len(self.face_and_edge_loads) + 1,
+                        int(split_line[1]),
+                        int(split_line[2]),
+                        int(split_line[3]),
+                        float(split_line[4]),
+                        float(split_line[5]),
+                        float(split_line[6]),
+                        float(split_line[7])))
