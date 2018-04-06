@@ -126,3 +126,10 @@ class LoadParser:
                         len(self.geometric_property_code_temps) + 1,
                         int(split_line[1]),
                         float(split_line[2])))
+
+                elif split_line[0].lower() == 'accel':
+                    self.gravitational_constants.add_item(Grv(
+                        len(self.gravitational_constants) + 1,
+                        float(split_line[1]),
+                        float(split_line[2]),
+                        float(split_line[3])))

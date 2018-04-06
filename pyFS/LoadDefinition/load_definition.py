@@ -173,9 +173,11 @@ class LoadCase:
             self.geometric_property_code_temps.add_item(
                 PTEMP(number, geometric_code, differential_temperature))
 
-    def create_gravitational_constants(self, x_acceleration=0,
+    def create_gravitational_constants(self, number=0, x_acceleration=0,
                                        y_acceleration=0, z_acceleration=0):
-        self.gravitational_constants.add_item(Grv(1, x_acceleration,
+        if number == 0:
+            number = len(self.gravitational_constants) + 1
+        self.gravitational_constants.add_item(Grv(number, x_acceleration,
                                                   y_acceleration,
                                                   z_acceleration))
 
