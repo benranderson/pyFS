@@ -120,3 +120,9 @@ class LoadParser:
                         len(self.geometric_property_code_press) + 1,
                         int(split_line[1]),
                         float(split_line[2])))
+
+                elif split_line[0].lower() == 'ptemp':
+                    self.geometric_property_code_temps.add_item(PTEMP(
+                        len(self.geometric_property_code_temps) + 1,
+                        int(split_line[1]),
+                        float(split_line[2])))
