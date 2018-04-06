@@ -64,3 +64,11 @@ class LoadParser:
                         float(split_line[7]),
                         float(split_line[8]),
                         float(split_line[9])))
+
+                elif split_line[0].lower() == 'udl':
+                    self.element_uniformly_distributed_loads.add_item(UDL(
+                        len(self.element_uniformly_distributed_loads) + 1,
+                        int(split_line[1]),
+                        float(split_line[2]),
+                        float(split_line[3]),
+                        float(split_line[4])))
