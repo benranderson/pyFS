@@ -72,3 +72,17 @@ class LoadParser:
                         float(split_line[2]),
                         float(split_line[3]),
                         float(split_line[4])))
+
+                elif split_line[0].lower() == 'ed':
+                    self.element_distributed_loads.add_item(ED(
+                        len(self.element_distributed_loads) + 1,
+                        int(split_line[1]),
+                        int(split_line[2]),
+                        float(split_line[3]),
+                        float(split_line[4]),
+                        float(split_line[5]),
+                        float(split_line[6]),
+                        float(split_line[7]),
+                        float(split_line[8]),
+                        float(split_line[9]),
+                        float(split_line[10])))
