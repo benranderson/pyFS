@@ -114,3 +114,9 @@ class LoadParser:
                         int(split_line[2]),
                         float(split_line[3])
                     ))
+
+                elif split_line[0].lower() == 'ppress':
+                    self.geometric_property_code_press.add_item(PPRESS(
+                        len(self.geometric_property_code_press) + 1,
+                        int(split_line[1]),
+                        float(split_line[2])))
