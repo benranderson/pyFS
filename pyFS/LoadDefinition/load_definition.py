@@ -118,7 +118,7 @@ class LoadCase:
         self.thermal_and_pressure_loads.add_item(TEPR(number, element,
                                                       temperature, press_pi,
                                                       temp_ls, press_po))
-        self.create_ambient_temperature_load()
+        # self.create_ambient_temperature_load()
 
     def create_geometric_property_code_load(self, number=0, geometric_code=1,
                                             x_udl=None, y_udl=None, z_udl=None,

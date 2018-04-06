@@ -133,3 +133,8 @@ class LoadParser:
                         float(split_line[1]),
                         float(split_line[2]),
                         float(split_line[3])))
+
+                elif split_line[0].lower == 'ambt':
+                    self.ambient_temperature_loads.add_item(AMBT(
+                        len(self.ambient_temperature_loads) + 1,
+                        float(split_line[1])))
