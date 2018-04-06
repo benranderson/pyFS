@@ -49,41 +49,40 @@ class LoadCase:
         else:
             self._initialise_load_definition()
 
-    def create_nodal_load(self, number=0, node=0, x_force=0, y_force=0,
+    def create_nodal_load(self, number=0, x_force=0, y_force=0,
                           z_force=0, x_moment=0, y_moment=0, z_moment=0,
                           conc_mass=0):
         if number == 0:
             number = len(self.nodal_loads) + 1
-        self.nodal_loads.add_item(NF(number, node, x_force, y_force, z_force,
+        self.nodal_loads.add_item(NF(number, x_force, y_force, z_force,
                                      x_moment, y_moment, z_moment, conc_mass))
 
-    def create_nodal_displacement(self, number=0, node=0, x_disp=0, y_disp=0,
+    def create_nodal_displacement(self, number=0, x_disp=0, y_disp=0,
                                   z_disp=0, x_rot=0, y_rot=0, z_rot=0):
         if number == 0:
             number = len(self.nodal_displacements) + 1
-        self.nodal_displacements.add_item(ND(number, node, x_disp, y_disp,
-                                             z_disp, x_rot, y_rot, z_rot))
+        self.nodal_displacements.add_item(ND(number, x_disp, y_disp, z_disp,
+                                             x_rot, y_rot, z_rot))
 
-    def create_element_point_load(self, number=0, element=0, coord=1, length=0,
+    def create_element_point_load(self, number=0, coord=1, length=0,
                                   x_force=0, y_force=0, z_force=0, x_moment=0,
                                   y_moment=0, z_moment=0):
         if number == 0:
             number = len(self.element_point_loads) + 1
-        self.element_point_loads.add_item(EP(number, element, coord, length,
-                                             x_force, y_force, z_force,
-                                             x_moment, y_moment, z_moment))
+        self.element_point_loads.add_item(EP(number, coord, length, x_force,
+                                             y_force, z_force, x_moment,
+                                             y_moment, z_moment))
 
-    def create_element_uniformly_distributed_load(self, number=0, element=0,
-                                                  x_force=0, y_force=0,
-                                                  z_force=0):
+    def create_element_uniformly_distributed_load(self, number=0, x_force=0,
+                                                  y_force=0, z_force=0):
         if number == 0:
             number = len(self.element_uniformly_distributed_loads) + 1
-        self.element_uniformly_distributed_loads.add_item(UDL(number, element,
-                                                              x_force, y_force,
+        self.element_uniformly_distributed_loads.add_item(UDL(number, x_force,
+                                                              y_force,
                                                               z_force))
 
-    def create_element_distributed_load(self, number=0, element=0, coord=1,
-                                        s_length=0, f_length=0, s_x_force=0,
+    def create_element_distributed_load(self, number=0, coord=1, s_length=0,
+                                        f_length=0, s_x_force=0,
                                         f_x_force=None, s_y_force=0,
                                         f_y_force=None, s_z_force=0,
                                         f_z_force=None):
@@ -95,65 +94,57 @@ class LoadCase:
             f_y_force = s_y_force
         if f_z_force is None:
             f_z_force = s_z_force
-        self.element_distributed_loads.add_item(ED(number, element, coord,
-                                                   s_length, f_length,
-                                                   s_x_force, f_x_force,
-                                                   s_y_force, f_y_force,
-                                                   s_z_force, f_z_force))
+        self.element_distributed_loads.add_item(ED(number, coord, s_length,
+                                                   f_length, s_x_force,
+                                                   f_x_force, s_y_force,
+                                                   f_y_force, s_z_force,
+                                                   f_z_force))
 
-    def create_face_and_edge_load(self, number=0, element=0, face=0,
-                                  direction=1, p1=0, p2=0, p3=0, p4=0):
+    def create_face_and_edge_load(self, number=0, face=0, direction=1, p1=0,
+                                  p2=0, p3=0, p4=0):
         if number == 0:
             number = len(self.face_and_edge_loads) + 1
-        self.face_and_edge_loads.add_item(FP(number, element, face, direction,
-                                             p1, p2, p3, p4))
+        self.face_and_edge_loads.add_item(FP(number, face, direction, p1, p2,
+                                             p3, p4))
 
-    def create_thermal_and_pressure_load(self, number=0, element=0,
-                                         temperature=0, press_pi=0,
-                                         temp_ls=None, press_po=0):
+    def create_thermal_and_pressure_load(self, number=0, temperature=0,
+                                         press_pi=0, temp_ls=None, press_po=0):
         if number == 0:
             number = len(self.thermal_and_pressure_loads) + 1
         if temp_ls is None:
             temp_ls = temperature
-        self.thermal_and_pressure_loads.add_item(TEPR(number, element,
-                                                      temperature, press_pi,
-                                                      temp_ls, press_po))
+        self.thermal_and_pressure_loads.add_item(TEPR(number, temperature,
+                                                      press_pi, temp_ls,
+                                                      press_po))
         # self.create_ambient_temperature_load()
 
-    def create_geometric_property_code_load(self, number=0, geometric_code=1,
-                                            x_udl=None, y_udl=None, z_udl=None,
+    def create_geometric_property_code_load(self, number=0, x_udl=None,
+                                            y_udl=None, z_udl=None,
                                             internal_pressure=None,
                                             differential_temperature=None):
-        self.create_geometric_property_code_UDL(number, geometric_code,
-                                                x_udl, y_udl, z_udl)
-        self.create_geometric_property_code_press(number, geometric_code,
-                                                  internal_pressure)
-        self.create_geometric_property_code_temp(number, geometric_code,
+        self.create_geometric_property_code_UDL(number, x_udl, y_udl, z_udl)
+        self.create_geometric_property_code_press(number, internal_pressure)
+        self.create_geometric_property_code_temp(number,
                                                  differential_temperature)
 
-    def create_geometric_property_code_UDL(self, number=0, geometric_code=1,
-                                           x_udl=None, y_udl=None, z_udl=None):
+    def create_geometric_property_code_UDL(self, number=0, x_udl=None,
+                                           y_udl=None, z_udl=None):
         if x_udl is not None:
             if number == 0:
                 number = len(self.geometric_property_code_UDLs) + 1
-            self.geometric_property_code_UDLs.add_item(PUDL(number,
-                                                            geometric_code, 1,
+            self.geometric_property_code_UDLs.add_item(PUDL(number, 1,
                                                             x_udl))
         if y_udl is not None:
             if number == 0 or x_udl is not None:
                 number = len(self.geometric_property_code_UDLs) + 1
-            self.geometric_property_code_UDLs.add_item(PUDL(number,
-                                                            geometric_code, 2,
-                                                            y_udl))
+            self.geometric_property_code_UDLs.add_item(PUDL(number, 2, y_udl))
         if z_udl is not None:
             if number == 0 or x_udl is not None or y_udl is not None:
                 number = len(self.geometric_property_code_UDLs) + 1
-            self.geometric_property_code_UDLs.add_item(PUDL(number,
-                                                            geometric_code, 3,
-                                                            z_udl))
+            self.geometric_property_code_UDLs.add_item(PUDL(number, 3, z_udl))
         pass
 
-    def create_geometric_property_code_press(self, number=0, geometric_code=1,
+    def create_geometric_property_code_press(self, number=0,
                                              internal_pressure=None):
         if internal_pressure is None:
             pass
@@ -161,9 +152,9 @@ class LoadCase:
             if number == 0:
                 number = len(self.geometric_property_code_press) + 1
             self.geometric_property_code_press.add_item(
-                PPRESS(number, geometric_code, internal_pressure))
+                PPRESS(number, internal_pressure))
 
-    def create_geometric_property_code_temp(self, number=0, geometric_code=1,
+    def create_geometric_property_code_temp(self, number=0,
                                             differential_temperature=None):
         if differential_temperature is None:
             pass

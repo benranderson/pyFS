@@ -12,10 +12,9 @@ class Load:
 
 class NF(Load):
 
-    def __init__(self, number, node, x_force, y_force, z_force, x_moment,
+    def __init__(self, number, x_force, y_force, z_force, x_moment,
                  y_moment, z_moment, conc_mass):
         Load.__init__(self, number)
-        self.node = node
         self.Fx = x_force
         self.Fy = y_force
         self.Fz = z_force
@@ -25,7 +24,7 @@ class NF(Load):
         self.NMass = conc_mass
 
     def LFormat(self):
-        return ('NF,' + str(self.node) + ',' + str(self.Fx) + ','
+        return ('NF,' + str(self.number) + ',' + str(self.Fx) + ','
                 + str(self.Fy) + ',' + str(self.Fz) + ',' + str(self.Mx) + ','
                 + str(self.My) + ',' + str(self.Mz) + ',' + str(self.NMass)
                 + '\n')
@@ -33,10 +32,9 @@ class NF(Load):
 
 class ND(Load):
 
-    def __init__(self, number, node, x_disp, y_disp, z_disp, x_rot, y_rot,
+    def __init__(self, number, x_disp, y_disp, z_disp, x_rot, y_rot,
                  z_rot):
         Load.__init__(self, number)
-        self.node = node
         self.Tx = x_disp
         self.Ty = y_disp
         self.Tz = z_disp
@@ -45,17 +43,16 @@ class ND(Load):
         self.Rz = z_rot
 
     def LFormat(self):
-        return ('ND,' + str(self.node) + ',' + str(self.Tx) + ','
+        return ('ND,' + str(self.number) + ',' + str(self.Tx) + ','
                 + str(self.Ty) + ',' + str(self.Tz) + ',' + str(self.Rx) + ','
                 + str(self.Ry) + ',' + str(self.Rz) + '\n')
 
 
 class EP(Load):
 
-    def __init__(self, number, element, coord, length, x_force, y_force,
+    def __init__(self, number, coord, length, x_force, y_force,
                  z_force, x_moment, y_moment, z_moment):
         Load.__init__(self, number)
-        self.element = element
         self.coord = coord
         self.length = length
         self.Fx = x_force
@@ -66,7 +63,7 @@ class EP(Load):
         self.Mz = z_moment
 
     def LFormat(self):
-        return ('EP,' + str(self.element) + ',' + str(self.coord) + ','
+        return ('EP,' + str(self.number) + ',' + str(self.coord) + ','
                 + str(self.length) + ',' + str(self.Fx) + ',' + str(self.Fy)
                 + ',' + str(self.Fz) + ',' + str(self.Mx) + ',' + str(self.My)
                 + ',' + str(self.Mz) + '\n')
@@ -74,24 +71,22 @@ class EP(Load):
 
 class UDL(Load):
 
-    def __init__(self, number, element, x_force, y_force, z_force):
+    def __init__(self, number, x_force, y_force, z_force):
         Load.__init__(self, number)
-        self.element = element
         self.UDX = x_force
         self.UDY = y_force
         self.UDZ = z_force
 
     def LFormat(self):
-        return ('UDL,' + str(self.element) + ',' + str(self.UDX) + ','
+        return ('UDL,' + str(self.number) + ',' + str(self.UDX) + ','
                 + str(self.UDY) + ',' + str(self.UDZ) + '\n')
 
 
 class ED(Load):
 
-    def __init__(self, number, element, coord, s_length, f_length, s_x_force,
+    def __init__(self, number, coord, s_length, f_length, s_x_force,
                  f_x_force, s_y_force, f_y_force, s_z_force, f_z_force):
         Load.__init__(self, number)
-        self.element = element
         self.coord = coord
         self.SLength = s_length
         self.FLength = f_length
@@ -103,7 +98,7 @@ class ED(Load):
         self.GDZ2 = f_z_force
 
     def LFormat(self):
-        return ('ED,' + str(self.element) + ',' + str(self.coord) + ','
+        return ('ED,' + str(self.number) + ',' + str(self.coord) + ','
                 + str(self.SLength) + ',' + str(self.FLength) + ','
                 + str(self.GDX1) + ',' + str(self.GDX2) + ',' + str(self.GDY1)
                 + ',' + str(self.GDY2) + ',' + str(self.GDZ1) + ','
@@ -112,9 +107,8 @@ class ED(Load):
 
 class FP(Load):
 
-    def __init__(self, number, element, face, direction, p1, p2, p3, p4):
+    def __init__(self, number, face, direction, p1, p2, p3, p4):
         Load.__init__(self, number)
-        self.element = element
         self.face = face
         self.dir = direction
         self.P1 = p1
@@ -123,61 +117,57 @@ class FP(Load):
         self.P4 = p4
 
     def LFormat(self):
-        return ('FP,' + str(self.element) + ',' + str(self.face) + ','
+        return ('FP,' + str(self.number) + ',' + str(self.face) + ','
                 + str(self.dir) + ',' + str(self.P1) + ',' + str(self.P2) + ','
                 + str(self.P3) + ',' + str(self.P4) + '\n')
 
 
 class TEPR(Load):
 
-    def __init__(self, number, element, temperature, press_pi, temp_ls,
+    def __init__(self, number, temperature, press_pi, temp_ls,
                  press_po):
         Load.__init__(self, number)
-        self.element = element
         self.TEMP1 = temperature
         self.PRESS1 = press_pi
         self.TEMP2 = temp_ls
         self.PRESS2 = press_po
 
     def LFormat(self):
-        return ('TEPR,' + str(self.element) + ',' + str(self.TEMP1) + ','
+        return ('TEPR,' + str(self.number) + ',' + str(self.TEMP1) + ','
                 + str(self.PRESS1) + ',' + str(self.TEMP2) + ','
                 + str(self.PRESS2) + '\n')
 
 
 class PUDL(Load):
 
-    def __init__(self, number, geometric_code, load_direction, load_magnitude):
+    def __init__(self, number, load_direction, load_magnitude):
         Load.__init__(self, number)
-        self.code = geometric_code
         self.dir = load_direction
         self.load = load_magnitude
 
     def LFormat(self):
-        return ('PUDL,' + str(self.code) + ',' + str(self.dir) + ','
+        return ('PUDL,' + str(self.number) + ',' + str(self.dir) + ','
                 + str(self.load) + '\n')
 
 
 class PPRESS(Load):
 
-    def __init__(self, number, geometric_code, internal_pressure):
+    def __init__(self, number, internal_pressure):
         Load.__init__(self, number)
-        self.code = geometric_code
         self.press = internal_pressure
 
     def LFormat(self):
-        return ('PPRESS,' + str(self.code) + ',' + str(self.press) + '\n')
+        return ('PPRESS,' + str(self.number) + ',' + str(self.press) + '\n')
 
 
 class PTEMP(Load):
 
-    def __init__(self, number, geometric_code, differential_temperature):
+    def __init__(self, number, differential_temperature):
         Load.__init__(self, number)
-        self.code = geometric_code
         self.temp = differential_temperature
 
     def LFormat(self):
-        return ('PTEMP,' + str(self.code) + ',' + str(self.temp) + '\n')
+        return ('PTEMP,' + str(self.number) + ',' + str(self.temp) + '\n')
 
 
 class Grv(Load):
