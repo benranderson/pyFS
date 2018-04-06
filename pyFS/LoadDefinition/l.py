@@ -10,7 +10,7 @@ class Load:
         return ''
 
 
-class NL(Load):
+class NF(Load):
 
     def __init__(self, number, node, x_force, y_force, z_force, x_moment,
                  y_moment, z_moment, conc_mass):

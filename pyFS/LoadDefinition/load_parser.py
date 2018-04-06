@@ -1,4 +1,4 @@
-from pyFS.LoadDefinition.l import (NL, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
+from pyFS.LoadDefinition.l import (NF, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
                                    PTEMP, Grv, AMBT, LList)
 import os
 
@@ -9,3 +9,33 @@ class LoadParser:
         self.load = os.path.join(path, name + extension)
         self._create_empty_lists()
         self._read_load_file()
+
+    def _create_empty_lists(self):
+        self.nodal_loads = LList()
+        self.nodal_displacements = LList()
+        self.element_point_loads = LList()
+        self.element_uniformly_distributed_loads = LList()
+        self.element_distributed_loads = LList()
+        self.face_and_edge_loads = LList()
+        self.thermal_and_pressure_loads = LList()
+        self.geometric_property_code_UDLs = LList()
+        self.geometric_property_code_press = LList()
+        self.geometric_property_code_temps = LList()
+        self.gravitational_constants = LList()
+        self.ambient_temperature_loads = LList()
+
+    def _read_load_file(self):
+        with open(self.load, 'r') as load:
+
+            for line in load:
+                split_line = line.rstrip().split(',')
+
+                if split_line[0].lower() == 'nf':
+                    self.nodal_loads.add_item(NF(0, int(split_line[1]),
+                                                 int(split_line[2]),
+                                                 int(split_line[3]),
+                                                 int(split_line[4]),
+                                                 int(split_line[5]),
+                                                 int(split_line[6]),
+                                                 int(split_line[7]),
+                                                 int(split_line[8])))

@@ -7,8 +7,9 @@ Designing the object heirarchy this way allows multiple LoadDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
-from pyFS.LoadDefinition.l import (NL, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
+from pyFS.LoadDefinition.l import (NF, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
                                    PTEMP, Grv, AMBT, LList)
+from pyFS.LoadDefinition.load_parser import LoadParser
 import datetime
 import os
 
@@ -53,7 +54,7 @@ class LoadCase:
                           conc_mass=0):
         if number == 0:
             number = len(self.nodal_loads) + 1
-        self.nodal_loads.add_item(NL(number, node, x_force, y_force, z_force,
+        self.nodal_loads.add_item(NF(number, node, x_force, y_force, z_force,
                                      x_moment, y_moment, z_moment, conc_mass))
 
     def create_nodal_displacement(self, number=0, node=0, x_disp=0, y_disp=0,
@@ -189,7 +190,19 @@ class LoadCase:
         self.write_L_file()
 
     def _read_load_definition(self):
-        pass
+        lp = LoadParser(self.path, self.name, self.extension)
+        self.nodal_loads = lp.nodal_loads
+        self.nodal_displacements = lp.nodal_displacements
+        self.element_point_loads = lp.element_point_loads
+        self.element_uniformly_distributed_loads = lp.element_uniformly_distributed_loads
+        self.element_distributed_loads = lp.element_distributed_loads
+        self.face_and_edge_loads = lp.face_and_edge_loads
+        self.thermal_and_pressure_loads = lp.thermal_and_pressure_loads
+        self.geometric_property_code_UDLs = lp.geometric_property_code_UDLs
+        self.geometric_property_code_press = lp.geometric_property_code_press
+        self.geometric_property_code_temps = lp.geometric_property_code_temps
+        self.gravitational_constants = lp.gravitational_constants
+        self.ambient_temperature_loads = lp.ambient_temperature_loads
 
     def _create_empty_lists(self):
         self.nodal_loads = LList()
@@ -209,7 +222,7 @@ class LoadCase:
         path = os.path.join(self.path, self.name + self.extension)
         with open(path, 'w+') as L:
             L.write('REFORMAT\n')
-            L.writelines(nl.LFormat() for nl in self.nodal_loads)
+            L.writelines(nf.LFormat() for nf in self.nodal_loads)
             L.writelines(nd.LFormat() for nd in self.nodal_displacements)
             L.writelines(ep.LFormat() for ep in self.element_point_loads)
             L.writelines(udl.LFormat() for udl
