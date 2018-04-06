@@ -97,3 +97,12 @@ class LoadParser:
                         float(split_line[5]),
                         float(split_line[6]),
                         float(split_line[7])))
+
+                elif split_line[0].lower() == 'tepr':
+                    self.thermal_and_pressure_loads.add_item(TEPR(
+                        len(self.thermal_and_pressure_loads) + 1,
+                        int(split_line[1]),
+                        float(split_line[2]),
+                        float(split_line[3]),
+                        float(split_line[4]),
+                        float(split_line[5])))
