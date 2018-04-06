@@ -203,7 +203,7 @@ class ModelDefinition:
         self.write_MDL_file()
 
     def _read_model_definition(self):
-        mp = ModelParser(self.path, self.name)
+        mp = ModelParser(self.path, self.name, self.extension)
         self.nodes = mp.nodes
         self.beam_elements = mp.beam_elements
         self.couples = mp.couples
