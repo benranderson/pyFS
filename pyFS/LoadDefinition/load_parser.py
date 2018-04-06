@@ -31,11 +31,23 @@ class LoadParser:
                 split_line = line.rstrip().split(',')
 
                 if split_line[0].lower() == 'nf':
-                    self.nodal_loads.add_item(NF(0, int(split_line[1]),
-                                                 int(split_line[2]),
-                                                 int(split_line[3]),
-                                                 int(split_line[4]),
-                                                 int(split_line[5]),
-                                                 int(split_line[6]),
-                                                 int(split_line[7]),
+                    self.nodal_loads.add_item(NF(len(self.nodal_loads) + 1,
+                                                 int(split_line[1]),
+                                                 float(split_line[2]),
+                                                 float(split_line[3]),
+                                                 float(split_line[4]),
+                                                 float(split_line[5]),
+                                                 float(split_line[6]),
+                                                 float(split_line[7]),
                                                  int(split_line[8])))
+
+                elif split_line[0].lower() == 'nd':
+                    self.nodal_displacements.add_item(ND(
+                        len(self.nodal_displacements) + 1,
+                        int(split_line[1]),
+                        float(split_line[2]),
+                        float(split_line[3]),
+                        float(split_line[4]),
+                        float(split_line[5]),
+                        float(split_line[6]),
+                        float(split_line[7])))
