@@ -14,6 +14,12 @@ import datetime
 import os
 
 
+class LoadDefinition:
+    """
+    Defines a list of all load cases associated with the FS2000 model.
+    """
+
+
 class LoadCase:
     """
     Represents all the functionality required to write a load case file and to
