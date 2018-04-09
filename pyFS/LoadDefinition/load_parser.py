@@ -116,10 +116,12 @@ class LoadParser:
 
                 elif split_line[0].lower() == 'accel':
                     self.gravitational_constants.add_item(Grv(
-                        float(split_line[1]),
+                        int(split_line[1]),
                         float(split_line[2]),
-                        float(split_line[3])))
+                        float(split_line[3]),
+                        float(split_line[4])))
 
                 elif split_line[0].lower == 'ambt':
                     self.ambient_temperature_loads.add_item(AMBT(
-                        float(split_line[1])))
+                        int(split_line[1]),
+                        float(split_line[2])))
