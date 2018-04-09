@@ -13,7 +13,7 @@ The aim is that this module provides equivalent functionality to the user as
 being able to manually manipulate text files and file extensions. The module
 should function across multiple tasks i.e. ModelDefinition, LoadDefinition etc.
 
-Designing the object heirarchy this way allows multiple ModelDefinitions to be
+Designing the object hierarchy this way allows multiple ModelDefinitions to be
 defined in a pyFS list and these can be used  with single or multiple Load,
 Analysis of Post-Processing objects in a single pyFS model.
 """
