@@ -272,12 +272,6 @@ class MDLList(list):
             self.append(new_item)
 
 
-class MDLDescription(dict):
-
-    def __init__(self, data=[]):
-        dict.__init__(self, data)
-
-
 class Point:
 
     def __init__(self, x, y, z):
