@@ -29,8 +29,8 @@ class ModelDefinition:
     write .MDL files for use in an analysis.
     """
 
-    def __init__(self, path, name, extension='.mdl',
-                 overwrite_model=False, initialise_model=False):
+    def __init__(self, path, name, overwrite_model=False,
+                 initialise_model=False):
         """
         A model definition can be created in one of four manners:
             1.  Create a new model, uninitialised
@@ -64,7 +64,6 @@ class ModelDefinition:
         """
         self.path = path
         self.name = name
-        self.extension = extension
         self.install_directory = util.get_FS2000_install_directory()
 
         if not os.path.exists(self.path):
@@ -203,7 +202,7 @@ class ModelDefinition:
         self.write_MDL_file()
 
     def _read_model_definition(self):
-        mp = ModelParser(self.path, self.name, self.extension)
+        mp = ModelParser(self.path, self.name)
         self.nodes = mp.nodes
         self.beam_elements = mp.beam_elements
         self.couples = mp.couples
@@ -235,7 +234,7 @@ class ModelDefinition:
         bc.run_command(c)
 
     def write_MDL_file(self):
-        path = os.path.join(self.path, self.name + self.extension)
+        path = os.path.join(self.path, self.name + '.mdl')
         with open(path, 'w+') as MDL:
             MDL.writelines(n.MDLFormat() for n in self.nodes)
             MDL.writelines(e.MDLFormat() for e in self.beam_elements)

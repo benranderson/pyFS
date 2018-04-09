@@ -6,8 +6,8 @@ import os
 
 class ModelParser:
 
-    def __init__(self, path, name, extension):
-        self.mdl = os.path.join(path, name + extension)
+    def __init__(self, path, name):
+        self.mdl = os.path.join(path, name + '.mdl')
         self._create_empty_lists()
         self._read_input_file()
 
