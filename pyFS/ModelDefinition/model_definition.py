@@ -29,7 +29,8 @@ class ModelDefinition:
     write .MDL files for use in an analysis.
     """
 
-    def __init__(self, path, name, overwrite_model=False,
+    def __init__(self, path, name, model_desc='Model', unit='S.I.', by='User',
+                 ref='A', desc='B', overwrite_model=False,
                  initialise_model=False):
         """
         A model definition can be created in one of four manners:
