@@ -20,7 +20,7 @@ class LoadCase:
     write .L files for use in an analysis.
     """
 
-    def __init__(self, path, name, extension='.L', overwrite_load=False):
+    def __init__(self, path, name, number, overwrite_load=False):
         """
         A load definition can be created in one of two manners:
             1.  Create a new load
@@ -38,7 +38,7 @@ class LoadCase:
         """
         self.path = path
         self.name = name
-        self.extension = extension
+        self.extension = '.L' + number
 
         if not os.path.exists(self.path):
             os.makedirs(self.path)
