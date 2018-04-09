@@ -20,3 +20,7 @@ Analysis of Post-Processing objects in a single pyFS model.
 
 
 class UserDefinition:
+    """
+    Represents all the functionality required to write user defined .U files
+    for use and archiving in FS2000.
+    """
