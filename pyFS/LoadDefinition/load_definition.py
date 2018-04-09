@@ -19,6 +19,23 @@ class LoadDefinition:
     Defines a list of all load cases associated with the FS2000 model.
     """
 
+    def __init__(self, path, name, number, overwrite_load=False):
+        """
+        On initiation, either needs to
+
+        1.  Begin new list / dictionary if no loads are yet defined.
+            (Number = 0)
+
+        2.  Insert a new load into the list / dictionary.
+            (Number > 0 doesn't exist)
+
+        3.  Overwrite an existing load in the list / dictionary.
+            (Number > 0 already exists, overwrite_load=True)
+
+        4.  Update an existing load in the list / dictionary.
+            (Number > 0 already exists, overwrite_load=False)
+        """
+
 
 class LoadCase:
     """
