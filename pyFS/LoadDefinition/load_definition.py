@@ -23,16 +23,13 @@ class LoadDefinition:
         """
         On initiation, either needs to
 
-        1.  Begin new list / dictionary if no loads are yet defined.
-            (Number = 0)
-
-        2.  Insert a new load into the list / dictionary.
+        1.  Insert a new load into the list / dictionary.
             (Number > 0 doesn't exist)
 
-        3.  Overwrite an existing load in the list / dictionary.
+        2.  Overwrite an existing load in the list / dictionary.
             (Number > 0 already exists, overwrite_load=True)
 
-        4.  Update an existing load in the list / dictionary.
+        3.  Update an existing load in the list / dictionary.
             (Number > 0 already exists, overwrite_load=False)
         """
 
