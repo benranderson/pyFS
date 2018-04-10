@@ -8,7 +8,7 @@ defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
 from pyFS.LoadDefinition.l import (NF, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
-                                   PTEMP, Grv, AMBT, LList)
+                                   PTEMP, Grv, AMBT, LList, LDict)
 from pyFS.LoadDefinition.load_parser import LoadParser
 import datetime
 import os
@@ -19,7 +19,7 @@ class LoadDefinition:
     Defines a list of all load cases associated with the FS2000 model.
     """
 
-    def __init__(self, path, name, number, overwrite_load=False):
+    def __init__(self, path, name, number, description, overwrite_load=False):
         """
         On initiation, either needs to
 
@@ -32,6 +32,10 @@ class LoadDefinition:
         3.  Update an existing load in the list / dictionary.
             (Number > 0 already exists, overwrite_load=False)
         """
+        self.path = path
+        self.name = name
+
+        self.loads = LDict()
 
 
 class LoadCase:
