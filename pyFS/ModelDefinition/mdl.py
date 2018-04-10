@@ -272,6 +272,14 @@ class MDLList(list):
             self.append(new_item)
 
 
+class MDLDescription(dict):
+
+    def __init__(self, data={'NAME': None, 'TITLE': None, 'UNIT': None,
+                             'DATE': None, 'TIME': None, 'BY': None,
+                             'REF': None, 'DESC': None}):
+        dict.__init__(self, data)
+
+
 class Point:
 
     def __init__(self, x, y, z):

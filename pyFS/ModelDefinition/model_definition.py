@@ -9,7 +9,8 @@ Analysis of Post-Processing objects in a single pyFS model.
 """
 from pyFS.ModelDefinition.mdl import (Node, BeamElement, SpringCouple,
                                       Restraint, MDLList, Point, Geometry,
-                                      Material, SpringTable, RCTable, ICTable)
+                                      Material, SpringTable, RCTable, ICTable,
+                                      MDLDescription)
 from pyFS.ModelDefinition.model_parser import ModelParser
 from pyFS.BatchController.batch_controller import BatchController
 from pyFS.BatchController.commands import Winfram
@@ -30,7 +31,7 @@ class ModelDefinition:
     """
 
     def __init__(self, path, name, model_desc='Model', unit='S.I.', by='User',
-                 ref='A', desc='B', overwrite_model=False,
+                 ref='A', addition_desc='B', overwrite_model=False,
                  initialise_model=False):
         """
         A model definition can be created in one of four manners:
@@ -69,7 +70,8 @@ class ModelDefinition:
         self.unit = unit
         self.by = by
         self.ref = ref
-        self.desc = desc
+        self.addition_desc = addition_desc
+
         self.install_directory = util.get_FS2000_install_directory()
 
         if not os.path.exists(self.path):
@@ -205,6 +207,7 @@ class ModelDefinition:
     def _initialise_model_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
+        self._create_model_description()
         self.write_MDL_file()
 
     def _read_model_definition(self):
@@ -230,6 +233,19 @@ class ModelDefinition:
         self.rc_tables = MDLList()
         self.ic_tables = MDLList()
 
+    def _create_model_description(self):
+        self.MDLDescription = MDLDescription()
+        self.MDLDescription['NAME'] = self.name
+        self.MDLDescription['TITLE'] = self.model_desc
+        self.MDLDescription['UNIT'] = self.unit
+        self.MDLDescription['DATE'] = datetime.datetime.now().strftime(
+            '%d/%m/%Y')
+        self.MDLDescription['TIME'] = datetime.datetime.now().strftime(
+            '%H:%M:%S')
+        self.MDLDescription['BY'] = self.by
+        self.MDLDescription['REF'] = self.ref
+        self.MDLDescription['DESC'] = self.addition_desc
+
     def _create_model_files(self):
         self.write_MDL_file()
         self.interpret_model_definition()
@@ -243,7 +259,8 @@ class ModelDefinition:
         path = os.path.join(self.path, self.name + '.mdl')
         with open(path, 'w+') as MDL:
             MDL.writelines('REFORMAT\n')
-            self.write_MDL_desc(MDL)
+            MDL.writelines(str(key) + ',' + str(value) +
+                           '\n' for key, value in self.MDLDescription.items())
             MDL.writelines(n.MDLFormat() for n in self.nodes)
             MDL.writelines(e.MDLFormat() for e in self.beam_elements)
             MDL.writelines(sc.MDLFormat() for sc in self.couples)
@@ -252,19 +269,6 @@ class ModelDefinition:
             MDL.writelines(m.MDLFormat() for m in self.materials)
             MDL.writelines(cp.MDLFormat() for cp in self.couple_properties)
             MDL.writelines('END OF DATA\n')
-
-    def write_MDL_desc(self, MDL):
-        MDL.writelines('FS2000 Version Rev  8 - 1- 127\n')
-        MDL.writelines('NAME,' + str(self.name) + '\n')
-        MDL.writelines('TITLE,' + self.model_desc + '\n')
-        MDL.writelines('UNIT,' + self.unit + '\n')
-        MDL.writelines('DATE,' + datetime.datetime.now().strftime('%d/%m/%Y')
-                       + '\n')
-        MDL.writelines('TIME,' + datetime.datetime.now().strftime('%H:%M:%S')
-                       + '\n')
-        MDL.writelines('BY,' + self.by + '\n')
-        MDL.writelines('REF,' + self.ref + '\n')
-        MDL.writelines('DESC,' + self.desc + '\n')
 
     def __repr__(self):
         return 'Model: {0}'.format(self.name)
