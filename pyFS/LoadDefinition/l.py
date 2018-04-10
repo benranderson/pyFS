@@ -224,5 +224,5 @@ class LList(list):
 
 class LDict(dict):
 
-    def __init__(self, data={})
+    def __init__(self, data={}):
         dict.__init__(self, data)
