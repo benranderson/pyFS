@@ -220,3 +220,9 @@ class LList(list):
             self[index] = new_item
         else:
             self.append(new_item)
+
+
+class LDict(dict):
+
+    def __init__(self, data={})
+        dict.__init__(self, data)
