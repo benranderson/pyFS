@@ -274,9 +274,9 @@ class MDLList(list):
 
 class MDLDescription(dict):
 
-    def __init__(self, data={'NAME': None, 'TITLE': None, 'UNIT': None,
-                             'DATE': None, 'TIME': None, 'BY': None,
-                             'REF': None, 'DESC': None}):
+    def __init__(self, data={'NAME': '', 'TITLE': '', 'UNIT': '',
+                             'DATE': '', 'TIME': '', 'BY': '',
+                             'REF': '', 'DESC': ''}):
         dict.__init__(self, data)
 
 

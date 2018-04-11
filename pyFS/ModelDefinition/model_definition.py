@@ -223,10 +223,11 @@ class ModelDefinition:
         self.ic_tables = mp.ic_tables
         self.name = mp.MDLDescription['NAME']
         self.model_desc = mp.MDLDescription['TITLE']
-        self.unit = self.MDLDescription['UNIT']
-        self.by = self.MDLDescription['BY']
-        self.ref = self.MDLDescription['REF']
-        self.addition_desc = self.MDLDescription['DESC']
+        self.unit = mp.MDLDescription['UNIT']
+        self.by = mp.MDLDescription['BY']
+        self.ref = mp.MDLDescription['REF']
+        self.addition_desc = mp.MDLDescription['DESC']
+        self._create_model_description()
 
     def _create_empty_lists(self):
         self.nodes = MDLList()

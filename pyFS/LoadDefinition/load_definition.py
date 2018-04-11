@@ -19,7 +19,8 @@ class LoadDefinition:
     Defines a list of all load cases associated with the FS2000 model.
     """
 
-    def __init__(self, path, name, number, description, overwrite_load=False):
+    def __init__(self, path, name, number, description='Description',
+                 overwrite_load=False):
         """
         On initiation, either needs to
 
@@ -34,8 +35,27 @@ class LoadDefinition:
         """
         self.path = path
         self.name = name
+        self.number = number
+        self.description = description
+        self.overwrite_load = overwrite_load
 
-        self.loads = LDict()
+        self._create_dict_of_loads()
+
+    def _create_dict_of_loads(self):
+        try:
+            dict_of_loads
+        except NameError:
+            dict_of_loads = LDict()
+
+        key = self.number
+        if key not in dict_of_loads:
+            dict_of_loads[key] = self.description
+        elif key in dict_of_loads and self.overwrite_load:
+            dict_of_loads[key] = self.description
+        elif (key in dict_of_loads and not self.overwrite_load and
+              not dict_of_loads[key] == self.description):
+            dict_of_loads[key] = self.description
+        return dict_of_loads
 
 
 class LoadCase:
@@ -44,7 +64,8 @@ class LoadCase:
     write .L files for use in an analysis.
     """
 
-    def __init__(self, path, name, number, overwrite_load=False):
+    def __init__(self, path, name, number, description='Description',
+                 overwrite_load=False):
         """
         A load definition can be created in one of two manners:
             1.  Create a new load
@@ -62,7 +83,12 @@ class LoadCase:
         """
         self.path = path
         self.name = name
-        self.extension = '.L' + number
+        self.number = number
+        self.extension = '.L' + str(self.number)
+        self.description = description
+
+        self.loads = LoadDefinition(self.path, self.name, self.number,
+                                    self.description, overwrite_load)
 
         if not os.path.exists(self.path):
             os.makedirs(self.path)

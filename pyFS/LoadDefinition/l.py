@@ -226,3 +226,10 @@ class LDict(dict):
 
     def __init__(self, data={}):
         dict.__init__(self, data)
+
+
+class LDescription(dict):
+
+    def __init__(self, data={'MODEL': '', 'TITLE': '', 'LCASE': '',
+                             'LDESC': '', 'LDATE': '', 'LTIME': ''}):
+        dict.__init__(self, data)

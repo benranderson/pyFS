@@ -1,1 +1,1 @@
-from .load_definition import LoadCase
+from .load_definition import LoadCase, LoadDefinition
