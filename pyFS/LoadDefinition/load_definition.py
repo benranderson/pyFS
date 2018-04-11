@@ -36,7 +36,7 @@ class LoadDefinition:
         self.path = path
         self.name = name
         self.number = number
-        self.description = description
+        self.load_description = description
         self.overwrite_load = overwrite_load
 
         self._create_dict_of_loads()
@@ -49,12 +49,12 @@ class LoadDefinition:
 
         key = self.number
         if key not in dict_of_loads:
-            dict_of_loads[key] = self.description
+            dict_of_loads[key] = slef.load_description
         elif key in dict_of_loads and self.overwrite_load:
-            dict_of_loads[key] = self.description
+            dict_of_loads[key] = slef.load_description
         elif (key in dict_of_loads and not self.overwrite_load and
-              not dict_of_loads[key] == self.description):
-            dict_of_loads[key] = self.description
+              not dict_of_loads[key] == slef.load_description):
+            dict_of_loads[key] = slef.load_description
         return dict_of_loads
 
 
@@ -85,10 +85,10 @@ class LoadCase:
         self.name = name
         self.number = number
         self.extension = '.L' + str(self.number)
-        self.description = description
+        self.load_description = description
 
         self.loads = LoadDefinition(self.path, self.name, self.number,
-                                    self.description, overwrite_load)
+                                    self.load_description, overwrite_load)
 
         if not os.path.exists(self.path):
             os.makedirs(self.path)
