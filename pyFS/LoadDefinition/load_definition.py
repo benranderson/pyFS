@@ -8,8 +8,10 @@ defined in a pyFS list and these can be used  with single or multiple Model,
 Analysis of Post-Processing objects in a single pyFS model.
 """
 from pyFS.LoadDefinition.l import (NF, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
-                                   PTEMP, Grv, AMBT, LList, LDict)
+                                   PTEMP, Grv, AMBT, LList, LDict,
+                                   LDescription)
 from pyFS.LoadDefinition.load_parser import LoadParser
+from pyFS.ModelDefinition.model_definition import ModelDefinition
 import datetime
 import os
 
@@ -36,7 +38,7 @@ class LoadDefinition:
         self.path = path
         self.name = name
         self.number = number
-        self.load_description = description
+        self.load_desc = description
         self.overwrite_load = overwrite_load
 
         self._create_dict_of_loads()
@@ -49,12 +51,12 @@ class LoadDefinition:
 
         key = self.number
         if key not in dict_of_loads:
-            dict_of_loads[key] = slef.load_description
+            dict_of_loads[key] = self.load_desc
         elif key in dict_of_loads and self.overwrite_load:
-            dict_of_loads[key] = slef.load_description
+            dict_of_loads[key] = self.load_desc
         elif (key in dict_of_loads and not self.overwrite_load and
-              not dict_of_loads[key] == slef.load_description):
-            dict_of_loads[key] = slef.load_description
+              not dict_of_loads[key] == self.load_desc):
+            dict_of_loads[key] = self.load_desc
         return dict_of_loads
 
 
@@ -85,10 +87,10 @@ class LoadCase:
         self.name = name
         self.number = number
         self.extension = '.L' + str(self.number)
-        self.load_description = description
+        self.load_desc = description
 
         self.loads = LoadDefinition(self.path, self.name, self.number,
-                                    self.load_description, overwrite_load)
+                                    self.load_desc, overwrite_load)
 
         if not os.path.exists(self.path):
             os.makedirs(self.path)
@@ -230,6 +232,7 @@ class LoadCase:
     def _initialise_load_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
+        self._create_load_description()
         self.write_L_file()
 
     def _read_load_definition(self):
@@ -261,10 +264,23 @@ class LoadCase:
         self.gravitational_constants = LList()
         self.ambient_temperature_loads = LList()
 
+    def _create_load_description(self):
+        self.LDescription = LDescription()
+        self.LDescription['MODEL'] = self.name
+        # self.LDescription['TITLE'] = ModelDefinition.model_desc
+        self.LDescription['LCASE'] = self.number
+        self.LDescription['LDESC'] = self.load_desc
+        self.LDescription['LDATE'] = datetime.datetime.now().strftime(
+            '%d/%m/%Y')
+        self.LDescription['LTIME'] = datetime.datetime.now().strftime(
+            '%H:%M:%S')
+
     def write_L_file(self):
         path = os.path.join(self.path, self.name + self.extension)
         with open(path, 'w+') as L:
-            L.write('REFORMAT\n')
+            L.writelines('REFORMAT\n')
+            L.writelines(str(key) + ',' + str(value) + '\n'
+                         for key, value in self.LDescription.items())
             L.writelines(nf.LFormat() for nf in self.nodal_loads)
             L.writelines(nd.LFormat() for nd in self.nodal_displacements)
             L.writelines(ep.LFormat() for ep in self.element_point_loads)
@@ -283,3 +299,4 @@ class LoadCase:
             L.writelines(grv.LFormat() for grv in self.gravitational_constants)
             L.writelines(ambt.LFormat() for ambt
                          in self.ambient_temperature_loads)
+            L.writelines('END OF FILE\n')
