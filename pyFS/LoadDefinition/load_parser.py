@@ -1,5 +1,5 @@
 from pyFS.LoadDefinition.l import (NF, ND, EP, UDL, ED, FP, TEPR, PUDL, PPRESS,
-                                   PTEMP, Grv, AMBT, LList)
+                                   PTEMP, Grv, AMBT, LList, LDescription)
 import os
 
 
@@ -8,6 +8,7 @@ class LoadParser:
     def __init__(self, path, name, extension):
         self.load = os.path.join(path, name + extension)
         self._create_empty_lists()
+        self._create_load_description()
         self._read_load_file()
 
     def _create_empty_lists(self):
@@ -24,13 +25,34 @@ class LoadParser:
         self.gravitational_constants = LList()
         self.ambient_temperature_loads = LList()
 
+    def _create_load_description(self):
+        self.LDescription = LDescription()
+
     def _read_load_file(self):
         with open(self.load, 'r') as load:
 
             for line in load:
                 split_line = line.rstrip().split(',')
 
-                if split_line[0].lower() == 'nf':
+                if split_line[0].lower() == 'model':
+                    self.LDescription['MODEL'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'title':
+                    self.LDescription['TITLE'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'lcase':
+                    self.LDescription['LCASE'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'ldesc':
+                    self.LDescription['LDESC'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'ldate':
+                    self.LDescription['LDATE'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'ltime':
+                    self.LDescription['LTIME'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'nf':
                     self.nodal_loads.add_item(NF(int(split_line[1]),
                                                  float(split_line[2]),
                                                  float(split_line[3]),

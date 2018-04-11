@@ -249,6 +249,11 @@ class LoadCase:
         self.geometric_property_code_temps = lp.geometric_property_code_temps
         self.gravitational_constants = lp.gravitational_constants
         self.ambient_temperature_loads = lp.ambient_temperature_loads
+        self.name = self.LDescription['MODEL']
+        # ModelDefinition.model_desc = self.LDescription['TITLE']
+        self.number = self.LDescription['LCASE']
+        self.load_desc = self.LDescription['LDESC']
+        self._create_load_description()
 
     def _create_empty_lists(self):
         self.nodal_loads = LList()
