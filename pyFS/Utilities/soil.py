@@ -12,16 +12,13 @@ def Tu(D, H, c, f, psi, gamma):
     return (pi * D * alpha * c + pi * D * H * gamma * (1 + K0) / 2 * tan(f * psi))
 
 def Delta_t(soil):
-    if soil == 'dense sand':
-        return 0.003
-    elif soil == 'loose sand':
-        return 0.005
-    elif soil == 'stiff clay':
-        return 0.008
-    elif soil == 'soft clay':
-        return 0.01
-    else:
-        raise ValueError('Unknown soil type.')
+    delta_ts = {
+        'dense sand': 0.003,
+        'loose sand': 0.005,
+        'stiff clay': 0.008,
+        'soft clay': 0.01,
+    }
+    return delta_ts.get(soil, ValueError('Unknown soil type.'))
 
 def Nch(c, H, D):
 
