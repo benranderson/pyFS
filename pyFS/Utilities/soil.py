@@ -50,12 +50,10 @@ def Nqh(psi, H, D):
     else:
         return 0
 
-def Pu(c, H, D, psi, gamma):
-    
+def Pu(c, H, D, psi, gamma):    
     return Nch(c, H, D) * c * D + Nqh(psi, H, D) * gamma * H * D
     
-def Delta_p(H, D):
-    
+def Delta_p(H, D):    
     return min(0.04 * (H + D / 2), 0.15 * D)
 
 def Ncv(c, H, D):
