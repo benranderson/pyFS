@@ -1,0 +1,26 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+appdirs = "==1.4.3"
+pyparsing = "==2.2.0"
+six = "==1.10.0"
+matplotlib = "*"
+scipy = "*"
+
+
+[dev-packages]
+
+pylint = "*"
+"autopep8" = "*"
+black = "*"
+
+
+[requires]
+
+python_version = "3.6"

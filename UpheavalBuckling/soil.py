@@ -103,7 +103,7 @@ def Qd(psi, c, D, gamma, H):
     
     return (Nc(psi) * c * D + Nq(psi) * gamma * H * D + Ngamma(psi) * (gamma + (1000 * 9.81)) * D**2 / 2)
 
-def Delta_qd(soil):
+def Delta_qd(soil, D):
     if 'sand' in soil:
         return 0.1 * D
     elif 'clay' in soil:
@@ -117,7 +117,7 @@ def DepthEquilibrium(psi, c, D, gamma, soil):
     penetrations = [R - sqrt(R**2 - (w / 2)**2) for w in widths]
     Qds = [Qd(psi, c, w, gamma, 0) for w in widths]
     p_max = 5 * D
-    F_max = p_max / Delta_qd(soil) * Qds[-1]
+    F_max = p_max / Delta_qd(soil, D) * Qds[-1]
     penetrations.append(p_max)
     Qds.append(F_max)
     Fd = np.stack((penetrations, Qds), axis=-1)
@@ -168,7 +168,7 @@ if __name__ == '__main__':
         for b in np.arange(0.5, 4.5, 0.5):
             _H = b + D / 2
             _Qd = Qd(psi, c, D, gamma, _H)
-            _Delta_qd = Delta_qd('dense sand')
+            _Delta_qd = Delta_qd('dense sand', D)
             o.write('Burial: ' + str(b) + 'm' +
                     '\tQd: ' + str(round(_Qd, 0)) + ' N/m' +
                     '\t\tDelta_qd: ' + str(round(_Delta_qd,3)) + ' m' +
@@ -180,7 +180,7 @@ if __name__ == '__main__':
         for b in np.arange(0.5, 4.5, 0.5):
             _H = b + D / 2
             _Qd = Qd(psi, c, D, gamma, _H)
-            _Delta_qd = Delta_qd('dense sand')
+            _Delta_qd = Delta_qd('dense sand', D)
             o.write('Burial: ' + str(b) + 'm' +
                     '\tQd: ' + str(round(_Qd, 0)) + ' N/m' +
                     '\t\tDelta_qd: ' + str(round(_Delta_qd,3)) + ' m' +
@@ -193,7 +193,7 @@ if __name__ == '__main__':
         for b in np.arange(0.5, 4.5, 0.5):
             _H = b + D / 2
             _Qd = Qd(psi, c, D, gamma, _H)
-            _Delta_qd = Delta_qd('soft clay')
+            _Delta_qd = Delta_qd('soft clay', D)
             o.write('Burial: ' + str(b) + 'm' +
                     '\tQd: ' + str(round(_Qd, 0)) + ' N/m' +
                     '\t\tDelta_qd: ' + str(round(_Delta_qd,3)) + ' m' +
@@ -206,7 +206,7 @@ if __name__ == '__main__':
         for b in np.arange(0.5, 4.5, 0.5):
             _H = b + D / 2
             _Qd = Qd(psi, c, D, gamma, _H)
-            _Delta_qd = Delta_qd('soft clay')
+            _Delta_qd = Delta_qd('soft clay', D)
             o.write('Burial: ' + str(b) + 'm' +
                     '\tQd: ' + str(round(_Qd, 0)) + ' N/m' +
                     '\t\tDelta_qd: ' + str(round(_Delta_qd,3)) + ' m' +

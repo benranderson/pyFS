@@ -3,6 +3,7 @@ Model/*.*
 !Model/*.mdl
 
 # Ben's ignores
+*.vscode/
 
 # Standard other stuff.....
 .idea/
