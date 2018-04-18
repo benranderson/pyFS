@@ -3,12 +3,9 @@ import numpy as np
 from scipy.interpolate import interp1d
 
 def Tu(D, H, c, f, psi, gamma):
-
-    psi = psi * 2 * pi / 360
-    
+    psi = psi * 2 * pi / 360    
     alpha = 0.608-0.123*c-0.274/(c**2+1)+0.695/(c**3+1)
-    K0 = 1 - sin(psi)
-    
+    K0 = 1 - sin(psi)    
     return (pi * D * alpha * c + pi * D * H * gamma * (1 + K0) / 2 * tan(f * psi))
 
 def Delta_t(soil):
