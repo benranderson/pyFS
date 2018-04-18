@@ -9,7 +9,8 @@ Analysis of Post-Processing objects in a single pyFS model.
 """
 from pyFS.ModelDefinition.mdl import (Node, BeamElement, SpringCouple,
                                       Restraint, MDLList, Point, Geometry,
-                                      Material, SpringTable, RCTable, ICTable)
+                                      Material, SpringTable, RCTable, ICTable,
+                                      MDLDescription)
 from pyFS.ModelDefinition.model_parser import ModelParser
 from pyFS.BatchController.batch_controller import BatchController
 from pyFS.BatchController.commands import Winfram
@@ -29,8 +30,9 @@ class ModelDefinition:
     write .MDL files for use in an analysis.
     """
 
-    def __init__(self, path, name,
-                 overwrite_model=False, initialise_model=False):
+    def __init__(self, path, name, model_desc='Model', unit='S.I.', by='User',
+                 ref='A', addition_desc='B', overwrite_model=False,
+                 initialise_model=False):
         """
         A model definition can be created in one of four manners:
             1.  Create a new model, uninitialised
@@ -64,6 +66,12 @@ class ModelDefinition:
         """
         self.path = path
         self.name = name
+        self.model_desc = model_desc
+        self.unit = unit
+        self.by = by
+        self.ref = ref
+        self.addition_desc = addition_desc
+
         self.install_directory = util.get_FS2000_install_directory()
 
         if not os.path.exists(self.path):
@@ -140,7 +148,7 @@ class ModelDefinition:
                         G=0, S_1_y=0, S_1_z=0, S_2_y=0, S_2_z=0, S_3_y=0,
                         S_3_z=0, S_4_y=0, S_4_z=0, G_2=0,
                         corrosion_allowance=0, mill_tolerance=0,
-                        contents_density=0, insultation_thickness=0,
+                        contents_density=0, insulation_thickness=0,
                         insulation_density=0, lining_thickness=0,
                         lining_density=0):
         if pipe_OD == pipe_WT == area == I_yy == I_zz == 0:
@@ -155,7 +163,7 @@ class ModelDefinition:
                                           S_3_y, S_3_z, S_4_y, S_4_z, G_2,
                                           corrosion_allowance, mill_tolerance,
                                           contents_density,
-                                          insultation_thickness,
+                                          insulation_thickness,
                                           insulation_density, lining_thickness,
                                           lining_density))
 
@@ -166,18 +174,18 @@ class ModelDefinition:
 
         if number == 0:
             number = len(self.materials) + 1
-        self.geometries.add_item(Material(number, E, G, mu, rho, alpha,
-                                          yield_strength, name, UTS,
-                                          pipework_UTS, cold_allowable_stress,
-                                          quality_factor, pressure_coefficient,
-                                          temperature_table))
+        self.materials.add_item(Material(number, E, G, mu, rho, alpha,
+                                         yield_strength, name, UTS,
+                                         pipework_UTS, cold_allowable_stress,
+                                         quality_factor, pressure_coefficient,
+                                         temperature_table))
 
     def create_couple_property(self, number=0, K1=0, K2=0, K3=0, K4=0, K5=0,
-                               K6=0, type=0, CO=0):
+                               K6=0, spring_type=0, CO=0):
         if number == 0:
             number = len(self.couple_properties) + 1
         self.couple_properties.add_item(SpringTable(number, K1, K2, K3, K4, K5,
-                                                    K6, type, CO))
+                                                    K6, spring_type, CO))
 
     def create_RC_table(self, number, rc_points=[]):
         if number == 0:
@@ -199,6 +207,7 @@ class ModelDefinition:
     def _initialise_model_definition(self):
         self.date_created = datetime.datetime.now()
         self._create_empty_lists()
+        self._create_model_description()
         self.write_MDL_file()
 
     def _read_model_definition(self):
@@ -212,6 +221,13 @@ class ModelDefinition:
         self.materials = mp.materials
         self.rc_tables = mp.rc_tables
         self.ic_tables = mp.ic_tables
+        self.name = mp.MDLDescription['NAME']
+        self.model_desc = mp.MDLDescription['TITLE']
+        self.unit = mp.MDLDescription['UNIT']
+        self.by = mp.MDLDescription['BY']
+        self.ref = mp.MDLDescription['REF']
+        self.addition_desc = mp.MDLDescription['DESC']
+        self._create_model_description()
 
     def _create_empty_lists(self):
         self.nodes = MDLList()
@@ -223,6 +239,19 @@ class ModelDefinition:
         self.materials = MDLList()
         self.rc_tables = MDLList()
         self.ic_tables = MDLList()
+
+    def _create_model_description(self):
+        self.MDLDescription = MDLDescription()
+        self.MDLDescription['NAME'] = self.name
+        self.MDLDescription['TITLE'] = self.model_desc
+        self.MDLDescription['UNIT'] = self.unit
+        self.MDLDescription['DATE'] = datetime.datetime.now().strftime(
+            '%d/%m/%Y')
+        self.MDLDescription['TIME'] = datetime.datetime.now().strftime(
+            '%H:%M:%S')
+        self.MDLDescription['BY'] = self.by
+        self.MDLDescription['REF'] = self.ref
+        self.MDLDescription['DESC'] = self.addition_desc
 
     def _create_model_files(self):
         self.write_MDL_file()
@@ -236,11 +265,17 @@ class ModelDefinition:
     def write_MDL_file(self):
         path = os.path.join(self.path, self.name + '.mdl')
         with open(path, 'w+') as MDL:
+            MDL.writelines('REFORMAT\n')
+            MDL.writelines(str(key) + ',' + str(value) +
+                           '\n' for key, value in self.MDLDescription.items())
             MDL.writelines(n.MDLFormat() for n in self.nodes)
             MDL.writelines(e.MDLFormat() for e in self.beam_elements)
             MDL.writelines(sc.MDLFormat() for sc in self.couples)
             MDL.writelines(r.MDLFormat() for r in self.restraints)
             MDL.writelines(g.MDLFormat() for g in self.geometries)
+            MDL.writelines(m.MDLFormat() for m in self.materials)
+            MDL.writelines(cp.MDLFormat() for cp in self.couple_properties)
+            MDL.writelines('END OF DATA\n')
 
     def __repr__(self):
         return 'Model: {0}'.format(self.name)

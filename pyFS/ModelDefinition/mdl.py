@@ -137,30 +137,32 @@ class Geometry(Component):
         self.lining_density = lining_density
 
     def MDLFormat(self):
-        return ('GTAB1,' + str(self.number) + ',' + str(self.type) + ',' +
-                self.name + ',' + str(self.designation) + ',' +
-                str(self.graphics_type) + ',' + str(self.graphics_offset_y) +
-                ',' + str(self.graphics_offset_z) + '\n' +
-                'GTAB2,' + str(self.number) + ',' + str(self.pipe_OD) + ',' +
-                str(self.pipe_WT) + ',' + str(self.area) + ',' +
-                str(self.I_yy) + ',' + str(self.I_zz) + ',' + str(self.J) +
-                '\n' +
-                'GTAB3,' + str(self.number) + ',' + str(self.A_y) + ',' +
-                str(self.A_z) + ',' + str(self.P_yy) + ',' + str(self.P_zz) +
-                ',' + str(self.G) + '\n' +
-                'GTAB4,' + str(self.number) + ',' + str(self.S_1_y) + ',' +
-                str(self.S_1_z) + ',' + str(self.S_2_y) + ',' +
-                str(self.S_2_z) + '\n' +
-                'GTAB5,' + str(self.number) + ',' + str(self.S_3_y) + ',' +
-                str(self.S_3_z) + ',' + str(self.S_4_y) + ',' +
-                str(self.S_4_z) + ',' + str(self.G_2) + '\n' +
-                'GTABP,' + str(self.number) + ',' +
-                str(self.corrosion_allowance) + ',' +
-                str(self.mill_tolerance) + ',' + str(self.contents_density) +
-                ',' + str(self.insulation_thickness) + ',' +
-                str(self.insulation_density) + ',' +
-                str(self.lining_thickness) + ',' + str(self.lining_density) +
-                '\n')
+        return ('GTAB1,' + str(self.number) + ',' + str(self.type) + ','
+                + self.name + ',' + str(self.designation) + ','
+                + str(self.graphics_type) + ','
+                + str(self.graphics_offset_y) + ','
+                + str(self.graphics_offset_z) + '\n'
+                + 'GTAB2,' + str(self.number) + ',' + str(self.pipe_OD)
+                + ',' + str(self.pipe_WT) + ',' + str(self.area) + ','
+                + str(self.I_yy) + ',' + str(self.I_zz) + ',' + str(self.J)
+                + '\n' +
+                'GTAB3,' + str(self.number) + ',' + str(self.A_y) + ','
+                + str(self.A_z) + ',' + str(self.P_yy) + ','
+                + str(self.P_zz) + ',' + str(self.G) + '\n'
+                + 'GTAB4,' + str(self.number) + ',' + str(self.S_1_y) + ','
+                + str(self.S_1_z) + ',' + str(self.S_2_y) + ','
+                + str(self.S_2_z) + '\n'
+                + 'GTAB5,' + str(self.number) + ',' + str(self.S_3_y) + ','
+                + str(self.S_3_z) + ',' + str(self.S_4_y) + ','
+                + str(self.S_4_z) + ',' + str(self.G_2) + '\n'
+                + 'GTABP,' + str(self.number) + ','
+                + str(self.corrosion_allowance) + ','
+                + str(self.mill_tolerance) + ','
+                + str(self.contents_density) + ','
+                + str(self.insulation_thickness) + ','
+                + str(self.insulation_density) + ','
+                + str(self.lining_thickness) + ','
+                + str(self.lining_density) + '\n')
 
 
 class Material(Component):
@@ -184,7 +186,16 @@ class Material(Component):
         self.temperature_table = temperature_table
 
     def MDLFormat(self):
-        pass
+        return ('MTAB,' + str(self.number) + ',' + str(self.E) + ','
+                + str(self.G) + ',' + str(self.mu) + ',' + str(self.rho) + ','
+                + str(self.alpha) + ',' + str(self.yield_strength) + ','
+                + str(self.name) + ',' + str(self.UTS) + '\n'
+                + 'MTABP,' + str(self.number) + ',' + str(self.pipework_UTS)
+                + ',' + str(self.cold_allowable_stress) + ','
+                + str(self.quality_factor) + ','
+                + str(self.pressure_coefficient) + '\n'
+                + 'MTABT,' + str(self.number) + ','
+                + str(self.temperature_table)[1:-1] + '\n')
 
     def add_temperature_point(self, temperature, alpha, E, allowable_stress):
 
@@ -202,8 +213,14 @@ class SpringTable(Component):
         self.K4 = K4
         self.K5 = K5
         self.K6 = K6
-        self.type = spring_type
+        self.spring_type = spring_type
         self.CO = CO
+
+    def MDLFormat(self):
+        return ('STAB,' + str(self.number) + ',' + str(self.K1) + ','
+                + str(self.K2) + ',' + str(self.K3) + ',' + str(self.K4) + ','
+                + str(self.K5) + ',' + str(self.K6) + ','
+                + str(self.spring_type) + ',' + str(self.CO) + '\n')
 
 
 class RCTable(Component):
@@ -253,6 +270,14 @@ class MDLList(list):
             self[index] = new_item
         else:
             self.append(new_item)
+
+
+class MDLDescription(dict):
+
+    def __init__(self, data={'NAME': '', 'TITLE': '', 'UNIT': '',
+                             'DATE': '', 'TIME': '', 'BY': '',
+                             'REF': '', 'DESC': ''}):
+        dict.__init__(self, data)
 
 
 class Point:

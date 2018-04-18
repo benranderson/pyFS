@@ -1,6 +1,7 @@
-from pyFS.ModelDefinition.mdl import (MDLList, Node, BeamElement,
-                                      SpringCouple, Restraint, Geometry,
-                                      Material, SpringTable, RCTable, ICTable)
+from pyFS.ModelDefinition.mdl import (MDLList, MDLDescription, Node,
+                                      BeamElement, SpringCouple, Restraint,
+                                      Geometry, Material, SpringTable,
+                                      RCTable, ICTable)
 import os
 
 
@@ -9,6 +10,7 @@ class ModelParser:
     def __init__(self, path, name):
         self.mdl = os.path.join(path, name + '.mdl')
         self._create_empty_lists()
+        self._create_model_description()
         self._read_input_file()
 
     def _create_empty_lists(self):
@@ -22,13 +24,40 @@ class ModelParser:
         self.ic_tables = MDLList()
         self.restraints = MDLList()
 
+    def _create_model_description(self):
+        self.MDLDescription = MDLDescription()
+
     def _read_input_file(self):
         with open(self.mdl, 'r') as mdl:
 
             for line in mdl:
                 split_line = line.rstrip().split(',')
 
-                if split_line[0].lower() == 'n':
+                if split_line[0].lower() == 'name':
+                    self.MDLDescription['NAME'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'title':
+                    self.MDLDescription['TITLE'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'unit':
+                    self.MDLDescription['UNIT'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'date':
+                    self.MDLDescription['DATE'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'time':
+                    self.MDLDescription['TIME'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'by':
+                    self.MDLDescription['BY'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'ref':
+                    self.MDLDescription['REF'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'desc':
+                    self.MDLDescription['DESC'] = str(split_line[1])
+
+                elif split_line[0].lower() == 'n':
                     self.nodes.add_item(Node(int(split_line[1]),
                                              float(split_line[2]),
                                              float(split_line[3]),
