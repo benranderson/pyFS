@@ -5,5 +5,5 @@ Currently supports model definition features.
 
 Install using:
 ```
-pip install git+https://github.com/stucharo/pyFS.git#egg=pyFS
+pip install -e --src <path in lower case> git+https://github.com/stucharo/pyFS.git#egg=pyFS
 ```
