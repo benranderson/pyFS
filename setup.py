@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-import src 
+import pyFS
 
 setup(
     name='pyFS',
