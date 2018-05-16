@@ -266,6 +266,7 @@ class ModelDefinition:
         path = os.path.join(self.path, self.name + '.mdl')
         with open(path, 'w+') as MDL:
             MDL.writelines('REFORMAT\n')
+            MDL.writelines('FS2000 VERSION Rev  8 - 1 - 127\n')
             MDL.writelines(str(key) + ',' + str(value) +
                            '\n' for key, value in self.MDLDescription.items())
             MDL.writelines(n.MDLFormat() for n in self.nodes)
