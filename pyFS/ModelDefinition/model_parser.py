@@ -102,15 +102,56 @@ class ModelParser:
                 elif (split_line[0].lower()[:-1] == 'gtab'):
                     self.read_GTAB(split_line)
 
+                elif (split_line[0].lower() == 'mtabp'):
+                    self.materials.add_item(Material(
+                        number=int(split_line[1]),
+                        E=None,
+                        G=None,
+                        mu=None,
+                        rho=None,
+                        alpha=None,
+                        yield_strength=None,
+                        name=None,
+                        UTS=None,
+                        pipework_UTS=float(split_line[1]),
+                        cold_allowable_stress=float(split_line[2]),
+                        quality_factor=float(split_line[3]),
+                        pressure_coefficient=float(split_line[4]),
+                        temperature_table=None))
+
+                elif (split_line[0].lower() == 'mtabt'):
+                    self.materials.add_item(Material(
+                        number=int(split_line[1]),
+                        E=None,
+                        G=None,
+                        mu=None,
+                        rho=None,
+                        alpha=None,
+                        yield_strength=None,
+                        name=None,
+                        UTS=None,
+                        pipework_UTS=None,
+                        cold_allowable_stress=None,
+                        quality_factor=None,
+                        pressure_coefficient=None,
+                        temperature_table=str(split_line[2])))
+
                 elif (split_line[0].lower() == 'mtab'):
-                    self.materials.add_item(Material(int(split_line[1]),
-                                                     float(split_line[2]),
-                                                     float(split_line[3]),
-                                                     float(split_line[4]),
-                                                     float(split_line[5]),
-                                                     float(split_line[6]),
-                                                     split_line[7],
-                                                     float(split_line[8])))
+                    self.materials.add_item(Material(
+                        number=int(split_line[1]),
+                        E=float(split_line[2]),
+                        G=float(split_line[3]),
+                        mu=float(split_line[4]),
+                        rho=float(split_line[5]),
+                        alpha=float(split_line[6]),
+                        yield_strength=float(split_line[7]),
+                        name=str(split_line[8]),
+                        UTS=float(split_line[9]),
+                        pipework_UTS=None,
+                        cold_allowable_stress=None,
+                        quality_factor=None,
+                        pressure_coefficient=None,
+                        temperature_table=None))
 
                 elif (split_line[0].lower() == 'stab'):
                     self.couple_properties.add_item(SpringTable(
