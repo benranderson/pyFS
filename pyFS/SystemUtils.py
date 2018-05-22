@@ -3,8 +3,10 @@ import sys
 import errno
 
 
-if 'win' in sys.platform:
+try:
     from winreg import ConnectRegistry, HKEY_LOCAL_MACHINE, OpenKey, EnumValue
+except ImportError:
+    pass
 
 
 def get_FS2000_install_directory():
