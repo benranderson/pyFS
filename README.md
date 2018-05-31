@@ -5,5 +5,5 @@ Currently supports model definition features.
 
 Install [update] using:
 ```
-pip install --src <path\to\dev\directory> -e git+https://github.com/stucharo/pyFS.git#egg=pyFS [--upgrade]
+pip install --src <path\to\dev\directory> -e git+https://github.com/benranderson/pyFS.git#egg=pyFS [--upgrade]
 ```
